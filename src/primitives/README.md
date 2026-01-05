@@ -13,3 +13,24 @@ Everything else is built on top of these.
 - `CatalogFilters.ts`: Filter criteria for catalog browsing.
 - `CatalogStats.ts`: Statistics about the camera catalog.
 - `ProcessingState.ts`: State of an async operation.
+
+## Usage Examples
+
+### Using IdentificationResult
+
+```typescript
+import { IdentificationResult } from './IdentificationResult';
+
+function displayResults(result: IdentificationResult) {
+  if (!result.success) return;
+
+  result.detections.forEach((detection) => {
+    console.log(`Detected camera at ${detection.bbox.x_min},${detection.bbox.y_min}`);
+
+    const matches = result.matches.get(detection.id);
+    if (matches && matches.length > 0) {
+      console.log(`Best match: ${matches[0].camera.modelName} (${matches[0].similarity})`);
+    }
+  });
+}
+```
