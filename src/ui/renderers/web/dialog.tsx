@@ -5,9 +5,32 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { XIcon } from 'lucide-react';
 
 import { cn } from '@/utils/cn';
+import { useDialog } from '@/ui/headless/useDialog';
 
-function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
-  return <DialogPrimitive.Root data-slot="dialog" {...props} />;
+function Dialog({
+  open: controlledOpen,
+  onOpenChange: controlledOnOpenChange,
+  defaultOpen,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Root>) {
+  // Use headless logic - but respecting controlled props if passed
+  const { isOpen, setOpen } = useDialog({
+    initialOpen: defaultOpen,
+    onOpenChange: controlledOnOpenChange,
+  });
+
+  const isControlled = controlledOpen !== undefined;
+  const openState = isControlled ? controlledOpen : isOpen;
+  const onOpenChangeState = isControlled ? controlledOnOpenChange : setOpen;
+
+  return (
+    <DialogPrimitive.Root
+      data-slot="dialog"
+      open={openState}
+      onOpenChange={onOpenChangeState}
+      {...props}
+    />
+  );
 }
 
 function DialogTrigger({ ...props }: React.ComponentProps<typeof DialogPrimitive.Trigger>) {

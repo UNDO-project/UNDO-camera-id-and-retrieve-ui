@@ -46,3 +46,4 @@ export { Separator } from '../renderers/web/separator';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from '../renderers/web/tabs';
 export { Progress } from '../renderers/web/progress';
 export { Slider } from '../renderers/web/slider';
+export { Dropzone } from '../renderers/web/dropzone';
