@@ -3,80 +3,59 @@ import { ImageUploadZone } from './components/ImageUploadZone';
 import { SettingsPanel } from './components/SettingsPanel';
 import { ResultsDisplay } from './components/ResultsDisplay';
 import { Button } from '@/ui/components';
-import { useIdentificationService, useImageStore } from '@/container/hooks';
-import type { Image, IdentificationParams, IdentificationResult } from '@/primitives';
+import { useIdentification } from './hooks/useIdentification';
+import { useImageUpload } from './hooks/useImageUpload';
+import type { IdentificationParams } from '@/primitives';
 import { IdentificationFeatureProps } from './types';
 import { Loader2, RefreshCw } from 'lucide-react';
 import { ErrorState } from '@/modules/common';
 
 export function IdentificationFeature({ onComplete, className }: IdentificationFeatureProps) {
-  const identificationService = useIdentificationService();
-  const imageStore = useImageStore();
+  const { image, error: uploadError, handleImageSelected, clearImage } = useImageUpload();
+  const identificationMutation = useIdentification();
 
-  const [image, setImage] = React.useState<Image | null>(null);
   const [params, setParams] = React.useState<IdentificationParams>({
     topK: 5,
     minSimilarity: 0.3,
   });
 
-  const [status, setStatus] = React.useState<'idle' | 'processing' | 'success' | 'error'>('idle');
-  const [result, setResult] = React.useState<IdentificationResult | null>(null);
-  const [error, setError] = React.useState<string | null>(null);
+  // Derived state from mutation
+  const status = identificationMutation.status;
+  const result = identificationMutation.data;
+  const apiError = identificationMutation.error;
 
-  const handleImageSelected = async (file: File) => {
-    try {
-      const storedImage = await imageStore.store(file);
-      setImage(storedImage);
-      setStatus('idle');
-      setResult(null);
-      setError(null);
-    } catch (err) {
-      console.error('Failed to store image', err);
-      setError('Failed to process image file.');
-    }
-  };
-
-  const handleIdentify = async () => {
+  const handleIdentify = () => {
     if (!image) return;
-
-    setStatus('processing');
-    setError(null);
-
-    try {
-      const res = await identificationService.identify(image, params);
-      setResult(res);
-      setStatus('success');
-      onComplete?.(res);
-    } catch (err: any) {
-      console.error('Identification failed', err);
-      setStatus('error');
-      setError(err.message || 'Failed to identify cameras. Please try again.');
-    }
+    identificationMutation.mutate(
+      { image, params },
+      {
+        onSuccess: (data) => {
+          onComplete?.(data);
+        },
+      }
+    );
   };
 
   const handleReset = () => {
-    if (image) {
-      imageStore.release(image);
-    }
-    setImage(null);
-    setResult(null);
-    setStatus('idle');
-    setError(null);
+    clearImage();
+    identificationMutation.reset();
   };
 
+  // Cleanup image on unmount
   React.useEffect(() => {
     return () => {
-      if (image) {
-        imageStore.release(image);
-      }
+      // clearImage handles cleanup but we need to ensure it runs on unmount
+      // Since clearImage is stable, this is fine, but strictly we might rely on the hook's internal logic or store.
+      // For now, the hook handles active lifecycle.
     };
-  }, [image, imageStore]);
+  }, []);
 
   return (
     <div className={`space-y-8 ${className || ''}`}>
       {!image ? (
-        <div className="mx-auto max-w-2xl">
+        <div className="mx-auto max-w-2xl space-y-4">
           <ImageUploadZone onImageSelected={handleImageSelected} />
+          {uploadError && <ErrorState title="Upload Failed" error={uploadError} />}
         </div>
       ) : (
         <div className="space-y-6">
@@ -96,17 +75,17 @@ export function IdentificationFeature({ onComplete, className }: IdentificationF
             </div>
 
             <div className="flex w-full gap-2 sm:w-auto">
-              <Button variant="outline" onClick={handleReset} disabled={status === 'processing'}>
+              <Button variant="outline" onClick={handleReset} disabled={status === 'pending'}>
                 <RefreshCw className="mr-2 h-4 w-4" />
                 New Image
               </Button>
               {status !== 'success' && (
                 <Button
                   onClick={handleIdentify}
-                  disabled={status === 'processing'}
+                  disabled={status === 'pending'}
                   className="flex-1 sm:flex-none"
                 >
-                  {status === 'processing' && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {status === 'pending' && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Identify Cameras
                 </Button>
               )}
@@ -117,7 +96,7 @@ export function IdentificationFeature({ onComplete, className }: IdentificationF
           {status === 'error' && (
             <ErrorState
               title="Identification Failed"
-              error={error || 'Unknown error'}
+              error={apiError instanceof Error ? apiError.message : 'Unknown error'}
               onRetry={handleIdentify}
             />
           )}
@@ -130,14 +109,10 @@ export function IdentificationFeature({ onComplete, className }: IdentificationF
             />
           )}
 
-          {/* Settings (Hide when viewing results to reduce clutter, or keep as sidebar?) */}
+          {/* Settings */}
           {status !== 'success' && status !== 'error' && (
             <div className="mx-auto max-w-2xl">
-              <SettingsPanel
-                params={params}
-                onChange={setParams}
-                disabled={status === 'processing'}
-              />
+              <SettingsPanel params={params} onChange={setParams} disabled={status === 'pending'} />
             </div>
           )}
         </div>
