@@ -21,7 +21,7 @@ export function DetectionCard({ detection, bestMatch, onClick, isSelected }: Det
           {detection.cropUrl ? (
             <img
               src={detection.cropUrl}
-              alt={detection.label}
+              alt={`Detected ${detection.label} crop`}
               className="h-full w-full object-cover"
             />
           ) : (

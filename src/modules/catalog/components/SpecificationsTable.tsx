@@ -27,9 +27,9 @@ export function SpecificationsTable({ specifications, className }: Specification
                 index % 2 === 0 ? 'bg-background' : 'bg-muted/20'
               )}
             >
-              <td className="text-muted-foreground w-1/3 p-3 font-medium break-words">
+              <th scope="row" className="text-muted-foreground w-1/3 p-3 font-medium break-words">
                 {formatKey(key)}
-              </td>
+              </th>
               <td className="w-2/3 p-3 break-words">{formatValue(value)}</td>
             </tr>
           ))}

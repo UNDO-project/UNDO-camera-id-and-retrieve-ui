@@ -20,7 +20,7 @@ export function Footer() {
             .
           </p>
         </div>
-        <div className="text-muted-foreground flex gap-4 text-sm">
+        <nav className="text-muted-foreground flex gap-4 text-sm" aria-label="Footer">
           <Link href="/about" className="hover:underline">
             About
           </Link>
@@ -30,7 +30,7 @@ export function Footer() {
           <Link href="/privacy" className="hover:underline">
             Privacy
           </Link>
-        </div>
+        </nav>
       </div>
     </footer>
   );

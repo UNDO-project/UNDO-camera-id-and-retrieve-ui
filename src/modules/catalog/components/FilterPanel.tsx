@@ -63,6 +63,15 @@ export function FilterPanel({ filters, stats, onFilterChange, className }: Filte
               variant={filters.vendors.includes(v.name) ? 'default' : 'secondary'}
               className="cursor-pointer px-2 py-1"
               onClick={() => toggleVendor(v.name)}
+              role="button"
+              aria-pressed={filters.vendors.includes(v.name)}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  toggleVendor(v.name);
+                }
+              }}
             >
               {v.name} ({v.count})
             </Badge>
@@ -85,6 +94,15 @@ export function FilterPanel({ filters, stats, onFilterChange, className }: Filte
               variant={filters.categories.includes(c.name) ? 'default' : 'secondary'}
               className="cursor-pointer px-2 py-1"
               onClick={() => toggleCategory(c.name)}
+              role="button"
+              aria-pressed={filters.categories.includes(c.name)}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  toggleCategory(c.name);
+                }
+              }}
             >
               {c.name} ({c.count})
             </Badge>

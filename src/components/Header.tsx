@@ -49,7 +49,7 @@ export function Header() {
             <Aperture className="h-6 w-6" />
             <span className="hidden font-bold sm:inline-block">cIDaR</span>
           </Link>
-          <nav className="flex items-center space-x-6 text-sm font-medium">
+          <nav className="flex items-center space-x-6 text-sm font-medium" aria-label="Global">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -70,13 +70,19 @@ export function Header() {
           </div>
           <div className="flex items-center gap-2">
             {/* Health Indicator */}
-            <div className="bg-muted/50 hidden items-center gap-1.5 rounded-full px-3 py-1 text-xs md:flex">
+            <div
+              className="bg-muted/50 hidden items-center gap-1.5 rounded-full px-3 py-1 text-xs md:flex"
+              role="status"
+              aria-live="polite"
+            >
               <Activity
                 className={`h-3.5 w-3.5 ${
                   health?.status === 'healthy' ? 'text-green-500' : 'text-red-500'
                 }`}
+                aria-hidden="true"
               />
               <span className="text-muted-foreground">
+                <span className="sr-only">System status: </span>
                 {health?.status === 'healthy' ? 'System Online' : 'System Offline'}
               </span>
             </div>
