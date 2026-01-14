@@ -13,13 +13,17 @@ export function useCamera(id: string) {
   });
 }
 
-export function useRelatedCameras(id: string, type: 'series' | 'category') {
+export function useRelatedCameras(
+  id: string,
+  type: 'series' | 'category',
+  options?: { enabled?: boolean }
+) {
   const catalogService = useCatalogService();
 
   return useQuery<CameraRecord[]>({
     queryKey: ['catalog', 'related', id, type],
     queryFn: () => catalogService.getRelatedCameras(id, type),
-    enabled: !!id,
+    enabled: !!id && (options?.enabled ?? true),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 }
