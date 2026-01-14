@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { useImageStore } from '@/container/hooks';
 import type { Image } from '@/primitives';
