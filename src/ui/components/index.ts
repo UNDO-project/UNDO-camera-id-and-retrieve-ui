@@ -48,3 +48,15 @@ export { Tabs, TabsList, TabsTrigger, TabsContent } from '../renderers/web/tabs'
 export { Progress } from '../renderers/web/progress';
 export { Slider } from '../renderers/web/slider';
 export { Dropzone } from '../renderers/web/dropzone';
+export {
+  Sheet,
+  SheetPortal,
+  SheetOverlay,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
+} from '../renderers/web/sheet';
