@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { CatalogPageClient } from './CatalogPageClient';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 export const metadata: Metadata = {
   title: 'Camera Catalog | cIDaR',
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function CatalogPage() {
-  return <CatalogPageClient />;
+  return (
+    <ErrorBoundary>
+      <CatalogPageClient />
+    </ErrorBoundary>
+  );
 }

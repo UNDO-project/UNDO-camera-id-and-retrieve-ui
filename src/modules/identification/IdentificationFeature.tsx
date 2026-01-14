@@ -4,7 +4,7 @@ import { ImageUploadZone } from './components/ImageUploadZone';
 import { SettingsPanel } from './components/SettingsPanel';
 import { ResultsDisplay } from './components/ResultsDisplay';
 import { ResultsDisplaySkeleton } from './components/ResultsDisplaySkeleton';
-import { Button } from '@/ui/components';
+import { Button, toast } from '@/ui/components';
 import { useIdentification } from './hooks/useIdentification';
 import { useImageUpload } from './hooks/useImageUpload';
 import type { IdentificationParams } from '@/primitives';
@@ -33,6 +33,10 @@ export function IdentificationFeature({ onComplete, className }: IdentificationF
       {
         onSuccess: (data) => {
           onComplete?.(data);
+          toast.success('Identification complete');
+        },
+        onError: (error) => {
+          toast.error(error instanceof Error ? error.message : 'Identification failed');
         },
       }
     );

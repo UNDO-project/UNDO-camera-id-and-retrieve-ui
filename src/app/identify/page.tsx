@@ -1,5 +1,6 @@
 import { IdentificationFeature } from '@/modules/identification';
 import { Metadata } from 'next';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 export const metadata: Metadata = {
   title: 'Identify Camera - cIDaR',
@@ -16,7 +17,9 @@ export default function IdentifyPage() {
         </p>
       </div>
 
-      <IdentificationFeature />
+      <ErrorBoundary>
+        <IdentificationFeature />
+      </ErrorBoundary>
     </div>
   );
 }

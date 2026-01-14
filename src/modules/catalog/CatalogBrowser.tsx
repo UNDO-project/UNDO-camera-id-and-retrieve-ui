@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { CatalogBrowserProps } from './types';
 import { CatalogFilters } from '@/primitives';
 import { SearchBar } from './components/SearchBar';
@@ -9,6 +9,7 @@ import { CameraGrid } from './components/CameraGrid';
 import { useCatalogSearch } from './hooks/useCatalogSearch';
 import { useCatalogStats } from './hooks/useCatalogStats';
 import { ErrorState } from '@/modules/common';
+import { toast } from '@/ui/components';
 
 export function CatalogBrowser({ initialFilters, onCameraSelect }: CatalogBrowserProps) {
   const [filters, setFilters] = useState<CatalogFilters>({
@@ -26,6 +27,12 @@ export function CatalogBrowser({ initialFilters, onCameraSelect }: CatalogBrowse
     error,
     refetch,
   } = useCatalogSearch(filters.searchQuery, filters);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to load cameras');
+    }
+  }, [error]);
 
   const handleSearchChange = useCallback((query: string) => {
     setFilters((prev) => ({ ...prev, searchQuery: query }));

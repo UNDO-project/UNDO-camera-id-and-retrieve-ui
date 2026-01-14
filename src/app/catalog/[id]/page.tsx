@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { CameraDetailClient } from './CameraDetailClient';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -15,5 +16,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CameraDetailPage({ params }: PageProps) {
   const { id } = await params;
-  return <CameraDetailClient id={id} />;
+  return (
+    <ErrorBoundary>
+      <CameraDetailClient id={id} />
+    </ErrorBoundary>
+  );
 }

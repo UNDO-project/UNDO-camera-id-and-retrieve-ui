@@ -19,6 +19,7 @@ import {
   Separator,
   Skeleton,
   Badge,
+  toast,
 } from '@/ui/components';
 import { ArrowLeft, FileText, Image as ImageIcon } from 'lucide-react';
 import { cn } from '@/utils/cn';
@@ -30,6 +31,12 @@ export function CameraDetail({ cameraId, onBack }: CameraDetailProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     let mounted = true;
