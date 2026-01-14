@@ -5,6 +5,7 @@ import { useCatalogService } from '@/container/hooks';
 import { CameraRecord } from '@/primitives';
 import { CameraDetailProps } from './types';
 import { SpecificationsTable } from './components/SpecificationsTable';
+import { SpecificationsTableSkeleton } from './components/SpecificationsTableSkeleton';
 import { VendorBadge } from './components/VendorBadge';
 import { CameraCard } from './components/CameraCard';
 import { ImageViewer } from '@/modules/common/ImageViewer';
@@ -278,11 +279,7 @@ function DetailSkeleton({ onBack }: { onBack?: () => void }) {
         <Skeleton className="h-96 w-full rounded-lg" />
         <div className="space-y-6 lg:col-span-2">
           <Skeleton className="h-10 w-full max-w-md" />
-          <div className="space-y-4">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-3/4" />
-          </div>
+          <SpecificationsTableSkeleton rows={8} />
         </div>
       </div>
     </div>

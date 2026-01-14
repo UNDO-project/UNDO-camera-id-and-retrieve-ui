@@ -1,5 +1,6 @@
 import { Skeleton, Separator, Button } from '@/ui/components';
 import { ArrowLeft } from 'lucide-react';
+import { SpecificationsTableSkeleton } from '@/modules/catalog/components/SpecificationsTableSkeleton';
 
 export default function CameraDetailLoading() {
   return (
@@ -40,11 +41,7 @@ export default function CameraDetailLoading() {
 
         <div className="space-y-6 lg:col-span-2">
           <Skeleton className="h-10 w-full max-w-md" />
-          <div className="space-y-4">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-3/4" />
-          </div>
+          <SpecificationsTableSkeleton rows={8} />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Skeleton className="h-24 w-full rounded-lg" />
             <Skeleton className="h-24 w-full rounded-lg" />

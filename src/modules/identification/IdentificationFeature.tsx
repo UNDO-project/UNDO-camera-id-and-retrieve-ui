@@ -3,6 +3,7 @@ import * as React from 'react';
 import { ImageUploadZone } from './components/ImageUploadZone';
 import { SettingsPanel } from './components/SettingsPanel';
 import { ResultsDisplay } from './components/ResultsDisplay';
+import { ResultsDisplaySkeleton } from './components/ResultsDisplaySkeleton';
 import { Button } from '@/ui/components';
 import { useIdentification } from './hooks/useIdentification';
 import { useImageUpload } from './hooks/useImageUpload';
@@ -94,6 +95,8 @@ export function IdentificationFeature({ onComplete, className }: IdentificationF
           </div>
 
           {/* Main Content Area */}
+          {status === 'pending' && <ResultsDisplaySkeleton />}
+
           {status === 'error' && (
             <ErrorState
               title="Identification Failed"

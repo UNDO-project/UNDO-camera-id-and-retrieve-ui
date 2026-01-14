@@ -1,6 +1,6 @@
 import { CameraRecord } from '@/primitives';
 import { CameraCard } from './CameraCard';
-import { Skeleton } from '@/ui/components';
+import { CameraCardSkeleton } from './CameraCardSkeleton';
 import { EmptyState } from '@/modules/common';
 
 interface CameraGridProps {
@@ -14,18 +14,7 @@ export function CameraGrid({ cameras, onCameraClick, isLoading }: CameraGridProp
     return (
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="flex h-[350px] flex-col space-y-4 rounded-xl border p-4">
-            <Skeleton className="h-40 w-full rounded-lg" />
-            <Skeleton className="h-6 w-3/4" />
-            <Skeleton className="h-4 w-1/2" />
-            <div className="space-y-2 pt-2">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-full" />
-            </div>
-            <div className="mt-auto pt-4">
-              <Skeleton className="h-10 w-full" />
-            </div>
-          </div>
+          <CameraCardSkeleton key={i} />
         ))}
       </div>
     );
