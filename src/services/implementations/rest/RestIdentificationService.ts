@@ -86,7 +86,8 @@ export class RestIdentificationService implements IIdentificationService {
           images: match.record.images || [],
           datasheetUrl: match.record.datasheet_url || undefined,
           specifications: match.record.specifications || {},
-          specificationsHtml: match.record.specifications_html || {},
+          specificationsHtml:
+            (match.record.specifications_html as Record<string, Record<string, any>>) || {},
         };
 
         return {
@@ -133,7 +134,7 @@ const CameraRecordSchema = z.object({
   model_name: z.string(),
   display_name: z.string(),
   description: z.string().nullable().optional(),
-  specifications: z.record(z.any()).default({}),
+  specifications: z.record(z.string(), z.any()).default({}),
   image_url: z.string().nullable().optional(),
   image_data: z.string().nullable().optional(), // binary
   images: z.array(z.string()).default([]),
@@ -141,7 +142,7 @@ const CameraRecordSchema = z.object({
   datasheet_url: z.string().nullable().optional(),
   datasheet_pdf: z.string().nullable().optional(), // binary
   datasheet_file: z.string().nullable().optional(),
-  specifications_html: z.record(z.record(z.any())).default({}),
+  specifications_html: z.record(z.string(), z.record(z.string(), z.any())).default({}),
   source: z.string(),
   category: z.string(),
   product_category: z.string(),
