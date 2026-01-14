@@ -166,7 +166,7 @@ export function CameraDetail({ cameraId, onBack }: CameraDetailProps) {
                   key={idx}
                   onClick={() => setActiveImageIndex(idx)}
                   className={cn(
-                    'relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border transition-all',
+                    'relative h-16 w-16 shrink-0 overflow-hidden rounded-md border transition-all',
                     activeImageIndex === idx
                       ? 'ring-primary border-primary ring-2'
                       : 'border-border hover:border-primary/50'
