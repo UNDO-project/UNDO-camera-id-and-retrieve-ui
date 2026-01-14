@@ -64,15 +64,3 @@ export function SettingsPanel({ params, onChange, disabled }: SettingsPanelProps
     </Card>
   );
 }
-
-// Temporary Label component since it wasn't in the initial UI set
-function Label({ children, className, ...props }: React.HTMLAttributes<HTMLLabelElement>) {
-  return (
-    <label
-      className={`text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${className}`}
-      {...props}
-    >
-      {children}
-    </label>
-  );
-}

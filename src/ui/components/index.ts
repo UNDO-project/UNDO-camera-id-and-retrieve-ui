@@ -22,6 +22,7 @@ export {
   DialogDescription,
 } from '../renderers/web/dialog';
 export { Input } from '../renderers/web/input';
+export { Label } from '../renderers/web/label';
 export { Badge, badgeVariants } from '../renderers/web/badge';
 export { Skeleton } from '../renderers/web/skeleton';
 export { Toaster } from '../renderers/web/sonner';
@@ -47,3 +48,15 @@ export { Tabs, TabsList, TabsTrigger, TabsContent } from '../renderers/web/tabs'
 export { Progress } from '../renderers/web/progress';
 export { Slider } from '../renderers/web/slider';
 export { Dropzone } from '../renderers/web/dropzone';
+export {
+  Sheet,
+  SheetPortal,
+  SheetOverlay,
+  SheetTrigger,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
+} from '../renderers/web/sheet';

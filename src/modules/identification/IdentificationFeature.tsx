@@ -1,3 +1,4 @@
+'use client';
 import * as React from 'react';
 import { ImageUploadZone } from './components/ImageUploadZone';
 import { SettingsPanel } from './components/SettingsPanel';

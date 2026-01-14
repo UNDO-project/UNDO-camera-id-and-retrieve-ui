@@ -1,3 +1,4 @@
+'use client';
 import { useQuery } from '@tanstack/react-query';
 import { useCatalogService } from '@/container/hooks';
 import type { CatalogFilters, CameraRecord } from '@/primitives';

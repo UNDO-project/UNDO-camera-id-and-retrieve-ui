@@ -1,9 +1,10 @@
+'use client';
 import * as React from 'react';
 import { cn } from '@/utils/cn';
 import { useDropzone } from '@/ui/headless/useDropzone';
 import { UploadIcon } from 'lucide-react';
 
-interface DropzoneProps extends React.HTMLAttributes<HTMLDivElement> {
+interface DropzoneProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onDrop'> {
   onDrop: (files: File[]) => void;
   accept?: string[];
   maxSize?: number;
