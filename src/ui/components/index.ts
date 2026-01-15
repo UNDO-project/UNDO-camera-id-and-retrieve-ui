@@ -26,6 +26,7 @@ export { Label } from '../renderers/web/label';
 export { Badge, badgeVariants } from '../renderers/web/badge';
 export { Skeleton } from '../renderers/web/skeleton';
 export { Toaster } from '../renderers/web/sonner';
+export { toast } from 'sonner';
 export {
   DropdownMenu,
   DropdownMenuTrigger,

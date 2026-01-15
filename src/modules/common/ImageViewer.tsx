@@ -19,6 +19,9 @@ export function ImageViewer({ src, alt, className, aspectRatio = 'video' }: Imag
   const handleZoomOut = () => setZoom((prev) => Math.max(prev - 0.5, 1));
   const handleReset = () => setZoom(1);
 
+  // Determine if image should be unoptimized (local blobs or data URIs)
+  const isLocal = src.startsWith('blob:') || src.startsWith('data:');
+
   return (
     <div
       className={cn(
@@ -39,7 +42,8 @@ export function ImageViewer({ src, alt, className, aspectRatio = 'video' }: Imag
           alt={alt}
           fill
           className="object-contain"
-          unoptimized // For blob URLs and external images during prototype
+          unoptimized={isLocal} // Only unoptimized for local assets
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
 

@@ -1,5 +1,20 @@
-import { IdentificationFeature } from '@/modules/identification';
+import dynamic from 'next/dynamic';
 import { Metadata } from 'next';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { Skeleton } from '@/ui/components';
+
+const IdentificationFeature = dynamic(
+  () => import('@/modules/identification').then((mod) => mod.IdentificationFeature),
+  {
+    loading: () => (
+      <div className="space-y-8">
+        <div className="mx-auto max-w-2xl space-y-4">
+          <Skeleton className="h-64 w-full rounded-lg border-2 border-dashed" />
+        </div>
+      </div>
+    ),
+  }
+);
 
 export const metadata: Metadata = {
   title: 'Identify Camera - cIDaR',
@@ -16,7 +31,9 @@ export default function IdentifyPage() {
         </p>
       </div>
 
-      <IdentificationFeature />
+      <ErrorBoundary>
+        <IdentificationFeature />
+      </ErrorBoundary>
     </div>
   );
 }

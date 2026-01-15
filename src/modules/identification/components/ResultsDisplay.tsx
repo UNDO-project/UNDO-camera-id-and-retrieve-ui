@@ -1,5 +1,6 @@
 import * as React from 'react';
-import type { IdentificationResult, Detection, CameraMatch } from '@/primitives';
+import NextImage from 'next/image';
+import type { IdentificationResult, Detection } from '@/primitives';
 import { DetectionCard } from './DetectionCard';
 import { MatchList } from './MatchList';
 import { BoundingBoxOverlay } from './BoundingBoxOverlay';
@@ -31,7 +32,15 @@ export function ResultsDisplay({ result, imagePreview, imageMetadata }: ResultsD
           <CardContent className="relative p-0">
             {/* Image Container - maintaining aspect ratio logic could be improved with native aspect-ratio */}
             <div className="relative w-full">
-              <img src={imagePreview} alt="Analyzed" className="block h-auto w-full" />
+              <NextImage
+                src={imagePreview}
+                alt="Analyzed"
+                width={imageMetadata.width}
+                height={imageMetadata.height}
+                className="block h-auto w-full"
+                priority
+                unoptimized
+              />
               <BoundingBoxOverlay
                 detections={result.detections}
                 selectedId={selectedDetectionId}

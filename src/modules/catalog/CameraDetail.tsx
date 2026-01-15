@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import NextImage from 'next/image';
 import { useCatalogService } from '@/container/hooks';
 import { CameraRecord } from '@/primitives';
 import { CameraDetailProps } from './types';
 import { SpecificationsTable } from './components/SpecificationsTable';
+import { SpecificationsTableSkeleton } from './components/SpecificationsTableSkeleton';
 import { VendorBadge } from './components/VendorBadge';
 import { CameraCard } from './components/CameraCard';
 import { ImageViewer } from '@/modules/common/ImageViewer';
@@ -18,6 +20,7 @@ import {
   Separator,
   Skeleton,
   Badge,
+  toast,
 } from '@/ui/components';
 import { ArrowLeft, FileText, Image as ImageIcon } from 'lucide-react';
 import { cn } from '@/utils/cn';
@@ -29,6 +32,12 @@ export function CameraDetail({ cameraId, onBack }: CameraDetailProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     let mounted = true;
@@ -172,8 +181,13 @@ export function CameraDetail({ cameraId, onBack }: CameraDetailProps) {
                       : 'border-border hover:border-primary/50'
                   )}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img} alt={`View ${idx + 1}`} className="h-full w-full object-cover" />
+                  <NextImage
+                    src={img}
+                    alt={`View ${idx + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="64px"
+                  />
                 </button>
               ))}
             </div>
@@ -278,11 +292,7 @@ function DetailSkeleton({ onBack }: { onBack?: () => void }) {
         <Skeleton className="h-96 w-full rounded-lg" />
         <div className="space-y-6 lg:col-span-2">
           <Skeleton className="h-10 w-full max-w-md" />
-          <div className="space-y-4">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-3/4" />
-          </div>
+          <SpecificationsTableSkeleton rows={8} />
         </div>
       </div>
     </div>

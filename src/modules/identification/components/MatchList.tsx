@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Card, CardHeader, CardTitle, CardContent, Button } from '@/ui/components';
-import { SimilarityBadge, ImageViewer } from '@/modules/common';
+import NextImage from 'next/image';
+import { Card, Button } from '@/ui/components';
+import { SimilarityBadge } from '@/modules/common';
 import type { CameraMatch } from '@/primitives';
 import { ExternalLink, Info } from 'lucide-react';
 
@@ -25,10 +26,12 @@ export function MatchList({ matches, onSelectMatch }: MatchListProps) {
           <div className="flex flex-col sm:flex-row">
             <div className="bg-muted relative aspect-video w-full sm:aspect-square sm:w-48">
               {match.catalogImageUrl ? (
-                <img
+                <NextImage
                   src={match.catalogImageUrl}
                   alt={match.camera.modelName}
-                  className="h-full w-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, 192px"
                 />
               ) : (
                 <div className="text-muted-foreground flex h-full w-full items-center justify-center text-xs">

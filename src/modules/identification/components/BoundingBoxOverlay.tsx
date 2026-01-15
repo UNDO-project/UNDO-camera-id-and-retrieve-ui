@@ -34,8 +34,18 @@ export function BoundingBoxOverlay({
           return (
             <g
               key={detection.id}
-              className="pointer-events-auto cursor-pointer"
+              className="pointer-events-auto cursor-pointer focus:outline-none"
               onClick={() => onSelectDetection(detection)}
+              role="button"
+              aria-label={`Select detection: ${detection.label} (${Math.round(detection.confidence * 100)}% confidence)`}
+              aria-pressed={isSelected}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onSelectDetection(detection);
+                }
+              }}
             >
               <rect
                 x={x_min}

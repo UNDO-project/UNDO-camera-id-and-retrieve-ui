@@ -4,6 +4,7 @@ import './globals.css';
 import { Providers } from './providers';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -28,10 +29,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <a
+          href="#main-content"
+          className="bg-primary text-primary-foreground absolute top-0 left-0 z-[100] -translate-y-full p-3 transition-transform focus:translate-y-0"
+        >
+          Skip to content
+        </a>
         <Providers>
           <div className="relative flex min-h-screen flex-col">
             <Header />
-            <main className="flex-1">{children}</main>
+            <main id="main-content" className="flex-1">
+              <ErrorBoundary>{children}</ErrorBoundary>
+            </main>
             <Footer />
           </div>
         </Providers>

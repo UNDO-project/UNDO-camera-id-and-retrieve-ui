@@ -1,6 +1,7 @@
 import * as React from 'react';
+import NextImage from 'next/image';
 import { Card, CardContent } from '@/ui/components';
-import { ConfidenceBadge, ImageViewer, SimilarityBadge } from '@/modules/common';
+import { ConfidenceBadge, SimilarityBadge } from '@/modules/common';
 import type { Detection, CameraMatch } from '@/primitives';
 
 interface DetectionCardProps {
@@ -19,10 +20,13 @@ export function DetectionCard({ detection, bestMatch, onClick, isSelected }: Det
       <CardContent className="flex gap-3 p-3">
         <div className="bg-muted relative h-20 w-20 flex-shrink-0 overflow-hidden rounded">
           {detection.cropUrl ? (
-            <img
+            <NextImage
               src={detection.cropUrl}
-              alt={detection.label}
-              className="h-full w-full object-cover"
+              alt={`Detected ${detection.label} crop`}
+              fill
+              className="object-cover"
+              sizes="80px"
+              unoptimized
             />
           ) : (
             <div className="text-muted-foreground flex h-full w-full items-center justify-center text-xs">
