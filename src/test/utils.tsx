@@ -6,6 +6,7 @@ import { createServices } from '@/services/factory';
 import { Services } from '@/services/factory';
 
 // Create a new QueryClient for each test
+
 const createTestQueryClient = () =>
   new QueryClient({
     defaultOptions: {
@@ -17,11 +18,13 @@ const createTestQueryClient = () =>
 
 interface AllTheProvidersProps {
   children: React.ReactNode;
+
   services?: Services;
 }
 
-const AllTheProviders = ({ children, services }: AllTheProvidersProps) => {
+export const AllTheProviders = ({ children, services }: AllTheProvidersProps) => {
   const queryClient = createTestQueryClient();
+
   const testServices =
     services || createServices({ apiBaseUrl: 'http://localhost:8000', useMocks: true });
 
@@ -38,11 +41,24 @@ interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
 
 const customRender = (ui: ReactElement, options?: CustomRenderOptions) => {
   const { services, ...renderOptions } = options || {};
+
   return render(ui, {
     wrapper: (props) => <AllTheProviders {...props} services={services} />,
+
     ...renderOptions,
   });
 };
 
+export const createWrapper = (services?: Services) => {
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    <AllTheProviders services={services}>{children}</AllTheProviders>
+  );
+
+  Wrapper.displayName = 'TestWrapper';
+
+  return Wrapper;
+};
+
 export * from '@testing-library/react';
+
 export { customRender as render };
