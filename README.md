@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# cIDaR Frontend
 
-## Getting Started
+> **Camera Identification and Research**
+>
+> AI tool for identifying security cameras from images.
 
-First, run the development server:
+![Status](https://img.shields.io/badge/status-active-success.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Tech](https://img.shields.io/badge/built%20with-Next.js-black)
+
+## 🚀 Overview
+
+cIDaR is a specialized tool designed for researchers. It employs a computer vision pipeline to detect, crop, and match CCTV camera models against a comprehensive catalog of professional equipment.
+
+## 🏗 Architecture
+
+This project is built on **Black Box Architecture** principles, prioritizing modularity, testing, and replaceability.
+
+- **Primitives**: Core domain types (e.g., `Image`, `Detection`, `CameraRecord`) are defined centrally and shared.
+- **Services**: Business logic is defined by strict Interfaces (`IIdentificationService`). Implementations (REST, Mock) are injected via a **Dependency Injection** container.
+- **Modules**: Features like `Identification` and `Catalog` are self-contained "black boxes" that own their UI, hooks, and logic.
+- **UI Layer**: Built with **shadcn/ui** and Tailwind CSS, separating headless logic from platform-specific renderers.
+
+## 🛠 Tech Stack
+
+- **Framework**: Next.js 14+ (App Router)
+- **Language**: TypeScript (Strict Mode)
+- **Styling**: Tailwind CSS & shadcn/ui
+- **State Management**: TanStack Query
+- **Testing**: Vitest & React Testing Library
+
+## 🚦 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm
+
+### Installation
+
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd cidar-frontend
+
+# Install dependencies
+npm install
+```
+
+### Development
+
+Start the development server with hot-reload:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧪 Testing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+We rely on a robust multi-layered testing strategy using **Vitest**.
 
-## Learn More
+### Running Tests
 
-To learn more about Next.js, take a look at the following resources:
+| Command              | Description                         |
+| :------------------- | :---------------------------------- |
+| `npm run test`       | Run all tests once (CI mode)        |
+| `npm run test:watch` | Run tests in interactive watch mode |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Test Strategy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1.  **Service Tests**: Unit tests for business logic and API mappings.
+    - _Example:_ `src/services/implementations/rest/__tests__/RestIdentificationService.test.ts`
+2.  **Module Tests**: Component and Hook tests to verify feature logic in isolation.
+    - _Example:_ `src/modules/identification/__tests__/IdentificationFeature.test.tsx`
+3.  **Integration Tests**: Full workflow tests simulating real user interactions.
+    - _Example:_ `src/test/integration/IdentificationFlow.test.tsx`
 
-## Deploy on Vercel
+> **Note:** Tests run against a simulated environment using `jsdom` and mock service implementations.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛡 Quality Control
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+We enforce code quality automatically using **Husky** and **lint-staged**.
+
+### Pre-Commit Hooks
+
+Before every commit, the following checks run automatically on _staged files only_:
+
+1.  **Linting**: ESLint checks for code errors and best practices.
+2.  **Formatting**: Prettier ensures consistent code style.
+
+If any check fails, the commit is blocked. Fix the reported issues and try committing again.
+
+## 📂 Project Structure
+
+A quick map of the `src` directory:
+
+```text
+src/
+├── api/            # HTTP Client and Endpoint definitions
+├── app/            # Next.js Pages and Layouts
+├── container/      # Service Container & Dependency Injection
+├── modules/        # Feature Modules (Identification, Catalog)
+├── platform/       # Platform Adapters (Web implementations)
+├── primitives/     # Core Data Types (Domain Entities)
+├── services/       # Service Interfaces & Implementations
+├── test/           # Test Setup & Utilities
+└── ui/             # Reusable UI Components
+```
