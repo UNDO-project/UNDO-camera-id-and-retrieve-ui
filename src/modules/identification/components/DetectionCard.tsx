@@ -18,7 +18,7 @@ export function DetectionCard({ detection, bestMatch, onClick, isSelected }: Det
       onClick={onClick}
     >
       <CardContent className="flex gap-3 p-3">
-        <div className="bg-muted relative h-20 w-20 flex-shrink-0 overflow-hidden rounded">
+        <div className="bg-muted relative h-20 w-20 shrink-0 overflow-hidden rounded">
           {detection.cropUrl ? (
             <NextImage
               src={detection.cropUrl}
