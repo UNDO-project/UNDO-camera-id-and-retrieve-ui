@@ -1,5 +1,6 @@
 'use client';
 import * as React from 'react';
+import NextImage from 'next/image';
 import { ImageUploadZone } from './components/ImageUploadZone';
 import { SettingsPanel } from './components/SettingsPanel';
 import { ResultsDisplay } from './components/ResultsDisplay';
@@ -69,7 +70,13 @@ export function IdentificationFeature({ onComplete, className }: IdentificationF
           <div className="bg-muted/30 flex flex-col items-start justify-between gap-4 rounded-lg p-4 sm:flex-row sm:items-center">
             <div className="flex items-center gap-4">
               <div className="relative h-16 w-16 overflow-hidden rounded bg-black">
-                <img src={image.preview} alt="Upload" className="h-full w-full object-cover" />
+                <NextImage
+                  src={image.preview}
+                  alt="Upload"
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
               </div>
               <div>
                 <p className="font-medium">{image.file.name}</p>

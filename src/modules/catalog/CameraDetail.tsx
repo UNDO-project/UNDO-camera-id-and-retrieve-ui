@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import NextImage from 'next/image';
 import { useCatalogService } from '@/container/hooks';
 import { CameraRecord } from '@/primitives';
 import { CameraDetailProps } from './types';
@@ -180,8 +181,13 @@ export function CameraDetail({ cameraId, onBack }: CameraDetailProps) {
                       : 'border-border hover:border-primary/50'
                   )}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img} alt={`View ${idx + 1}`} className="h-full w-full object-cover" />
+                  <NextImage
+                    src={img}
+                    alt={`View ${idx + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="64px"
+                  />
                 </button>
               ))}
             </div>

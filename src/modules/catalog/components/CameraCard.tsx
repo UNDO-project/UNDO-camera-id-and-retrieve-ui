@@ -1,3 +1,4 @@
+import NextImage from 'next/image';
 import { CameraRecord } from '@/primitives';
 import {
   Card,
@@ -29,11 +30,12 @@ export function CameraCard({ camera, onClick, className }: CameraCardProps) {
     >
       <div className="bg-muted relative aspect-video w-full overflow-hidden">
         {camera.imageUrl ? (
-          <img
+          <NextImage
             src={camera.imageUrl}
             alt={camera.modelName}
-            className="h-full w-full object-cover transition-transform group-hover:scale-105"
-            loading="lazy"
+            fill
+            className="object-cover transition-transform group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
           <div className="text-muted-foreground bg-secondary/30 flex h-full w-full items-center justify-center">
