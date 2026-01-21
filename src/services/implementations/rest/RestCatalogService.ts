@@ -2,6 +2,7 @@ import type { ICatalogService } from '@/services/interfaces';
 import type { CameraRecord, CatalogFilters, CatalogStats } from '@/primitives';
 import type { ApiClient } from '@/api';
 import { ENDPOINTS } from '@/api/endpoints';
+import { transformLocalImagePath, transformLocalImagePaths } from '@/utils/imagePath';
 
 export class RestCatalogService implements ICatalogService {
   constructor(private apiClient: ApiClient) {}
@@ -36,5 +37,13 @@ export class RestCatalogService implements ICatalogService {
   async getRelatedCameras(cameraId: string, type: 'series' | 'category'): Promise<CameraRecord[]> {
     // Placeholder
     return [];
+  }
+
+  private transformCamera(camera: CameraRecord): CameraRecord {
+    return {
+      ...camera,
+      imageUrl: transformLocalImagePath(camera.imageUrl),
+      images: transformLocalImagePaths(camera.images || []),
+    };
   }
 }

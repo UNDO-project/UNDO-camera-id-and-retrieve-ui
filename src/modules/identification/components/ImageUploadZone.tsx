@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dropzone, Button } from '@/ui/components';
+import { Dropzone } from '@/ui/components';
 import { FileImage } from 'lucide-react';
 
 interface ImageUploadZoneProps {
@@ -29,6 +29,7 @@ export function ImageUploadZone({ onImageSelected, isProcessing }: ImageUploadZo
           </div>
           <div>
             <p className="text-lg font-medium">Drag and drop an image here</p>
+            <p className="text-lg font-medium">or click to upload</p>
             <p className="text-muted-foreground text-sm">Supports JPEG, PNG, WEBP up to 10MB</p>
           </div>
         </div>

@@ -14,6 +14,12 @@ const nextConfig: NextConfig = {
         hostname: 'www.hikvision.com',
       },
     ],
+    localPatterns: [
+      {
+        pathname: '/api/images',
+        // search: '',
+      },
+    ],
   },
   experimental: {
     optimizePackageImports: ['lucide-react'],
