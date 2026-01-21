@@ -57,6 +57,14 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the app.
 
+### Local Image Proxy
+
+When running locally, the application includes a proxy route (`/api/images`) to serve images from the local file system (e.g., `/Users/...` or `C:\...`).
+This allows the UI to display images stored outside the `public/` directory without browser security errors.
+The `ICatalogService` implementations automatically transform these local paths into proxy URLs.
+
+**Important:** This is a development-only feature. In production, images should be served via a CDN or proper object storage, and the path transformation logic in `src/utils/imagePath.ts` should be disabled or updated.
+
 ## 🧪 Testing
 
 We rely on a robust multi-layered testing strategy using **Vitest**.
