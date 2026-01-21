@@ -10,6 +10,7 @@ import type {
 import type { ApiClient } from '@/api';
 import { ENDPOINTS } from '@/api/endpoints';
 import { z } from 'zod';
+import { transformLocalImagePath, transformLocalImagePaths } from '@/utils/imagePath';
 
 export class RestIdentificationService implements IIdentificationService {
   constructor(private apiClient: ApiClient) {}
@@ -57,7 +58,7 @@ export class RestIdentificationService implements IIdentificationService {
         },
         confidence: result.detection.confidence,
         label: result.detection.label,
-        cropUrl: result.detection.crop_path || undefined, // API path needs full URL? Assuming handled elsewhere or relative
+        cropUrl: transformLocalImagePath(result.detection.crop_path || undefined),
       };
 
       detections.push(detection);
@@ -82,8 +83,8 @@ export class RestIdentificationService implements IIdentificationService {
           category: match.record.category,
           productCategory: match.record.product_category,
           productSeries: match.record.product_series,
-          imageUrl: match.record.image_url || undefined,
-          images: match.record.images || [],
+          imageUrl: transformLocalImagePath(match.record.image_url || undefined),
+          images: transformLocalImagePaths(match.record.images || []),
           datasheetUrl: match.record.datasheet_url || undefined,
           specifications: match.record.specifications || {},
           specificationsHtml:
@@ -94,7 +95,7 @@ export class RestIdentificationService implements IIdentificationService {
           cameraId: match.camera_id,
           similarity: match.score,
           camera: record,
-          catalogImageUrl: match.catalog_image_path || undefined,
+          catalogImageUrl: transformLocalImagePath(match.catalog_image_path || undefined),
         };
       });
 

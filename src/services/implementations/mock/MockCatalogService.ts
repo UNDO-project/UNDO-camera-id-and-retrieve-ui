@@ -1,6 +1,7 @@
 import type { ICatalogService } from '@/services/interfaces';
 import type { CameraRecord, CatalogFilters, CatalogStats } from '@/primitives';
 import { mockCameras } from './fixtures/cameras';
+import { transformLocalImagePath, transformLocalImagePaths } from '@/utils/imagePath';
 
 export class MockCatalogService implements ICatalogService {
   async getStats(): Promise<CatalogStats> {
@@ -39,17 +40,26 @@ export class MockCatalogService implements ICatalogService {
       results = results.filter((c) => filters.vendors.includes(c.vendor));
     }
 
-    return results;
+    return results.map(this.transformCamera);
   }
 
   async getCamera(id: string): Promise<CameraRecord> {
     const camera = mockCameras.find((c) => c.cameraId === id);
     if (!camera) throw new Error('Camera not found');
-    return camera;
+    return this.transformCamera(camera);
   }
 
   async getRelatedCameras(cameraId: string, type: 'series' | 'category'): Promise<CameraRecord[]> {
     // Return other cameras as "related"
-    return mockCameras.filter((c) => c.cameraId !== cameraId).slice(0, 5);
+    const results = mockCameras.filter((c) => c.cameraId !== cameraId).slice(0, 5);
+    return results.map(this.transformCamera);
+  }
+
+  private transformCamera(camera: CameraRecord): CameraRecord {
+    return {
+      ...camera,
+      imageUrl: transformLocalImagePath(camera.imageUrl),
+      images: transformLocalImagePaths(camera.images || []),
+    };
   }
 }
