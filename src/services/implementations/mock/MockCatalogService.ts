@@ -1,4 +1,4 @@
-import type { ICatalogService } from '@/services/interfaces';
+import type { ICatalogService, PaginatedCameras } from '@/services/interfaces';
 import type { CameraRecord, CatalogFilters, CatalogStats } from '@/primitives';
 import { mockCameras } from './fixtures/cameras';
 import { transformLocalImagePath, transformLocalImagePaths } from '@/utils/imagePath';
@@ -10,20 +10,21 @@ export class MockCatalogService implements ICatalogService {
     return {
       totalCameras: 1250,
       vendors: [
-        { name: 'Axis', count: 450 },
-        { name: 'Hikvision', count: 320 },
-        { name: 'Hanwha', count: 200 },
+        { value: 'Axis', count: 450 },
+        { value: 'Hikvision', count: 320 },
+        { value: 'Hanwha', count: 200 },
       ],
       categories: [
-        { name: 'Dome', count: 600 },
-        { name: 'Bullet', count: 400 },
-        { name: 'PTZ', count: 250 },
+        { value: 'Dome', count: 600 },
+        { value: 'Bullet', count: 400 },
+        { value: 'PTZ', count: 250 },
       ],
+      series: [],
       embeddingsLoaded: true,
     };
   }
 
-  async search(query: string, filters?: CatalogFilters): Promise<CameraRecord[]> {
+  async search(query: string, filters?: CatalogFilters): Promise<PaginatedCameras> {
     await new Promise((resolve) => setTimeout(resolve, 800));
 
     // Simple filter implementation
@@ -40,7 +41,24 @@ export class MockCatalogService implements ICatalogService {
       results = results.filter((c) => filters.vendors.includes(c.vendor));
     }
 
-    return results.map(this.transformCamera);
+    const page = filters?.page || 1;
+    const limit = filters?.limit || 20;
+    const total = results.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+
+    const cameras = results.slice(start, end).map((c) => this.transformCamera(c));
+
+    return {
+      cameras,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+      },
+    };
   }
 
   async getCamera(id: string): Promise<CameraRecord> {
@@ -52,7 +70,7 @@ export class MockCatalogService implements ICatalogService {
   async getRelatedCameras(cameraId: string, type: 'series' | 'category'): Promise<CameraRecord[]> {
     // Return other cameras as "related"
     const results = mockCameras.filter((c) => c.cameraId !== cameraId).slice(0, 5);
-    return results.map(this.transformCamera);
+    return results.map((c) => this.transformCamera(c));
   }
 
   private transformCamera(camera: CameraRecord): CameraRecord {
