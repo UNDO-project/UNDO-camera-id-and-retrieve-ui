@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
         hostname: 'www.hikvision.com',
       },
       {
+        protocol: 'https',
+        hostname: 'assets.hikvision.com',
+      },
+      {
         protocol: 'http',
         hostname: 'localhost',
         port: '8000',
@@ -23,7 +27,9 @@ const nextConfig: NextConfig = {
     localPatterns: [
       {
         pathname: '/api/images',
-        // search: '',
+      },
+      {
+        pathname: '/api/v1/images/**',
       },
     ],
   },
