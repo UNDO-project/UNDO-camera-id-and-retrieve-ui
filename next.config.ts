@@ -50,6 +50,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/v1/images/:path*',
+        destination: 'http://localhost:8000/api/v1/images/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
