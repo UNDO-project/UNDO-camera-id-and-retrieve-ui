@@ -6,4 +6,6 @@ export interface CatalogFilters {
   vendors: string[];
   categories: string[];
   series: string[];
+  page?: number;
+  limit?: number;
 }

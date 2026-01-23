@@ -1,4 +1,13 @@
 /**
+ * Flattened camera specifications.
+ */
+export interface CameraSpecs {
+  maxResolution?: string;
+  lens?: string;
+  horizontalFov?: string;
+}
+
+/**
  * Complete camera information from catalog.
  */
 export interface CameraRecord {
@@ -16,9 +25,11 @@ export interface CameraRecord {
   // Media
   imageUrl?: string;
   images: string[];
+  imageFiles?: string[];
   datasheetUrl?: string;
 
   // Specifications
+  specs?: CameraSpecs;
   specifications: Record<string, any>;
   specificationsHtml: Record<string, Record<string, any>>;
 }
