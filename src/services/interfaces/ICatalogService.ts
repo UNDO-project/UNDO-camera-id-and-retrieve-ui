@@ -1,4 +1,19 @@
-import type { CameraRecord, CatalogFilters, CatalogStats } from '@/primitives';
+import type { CameraRecord, CatalogFilters, CatalogStats, FacetItem } from '@/primitives';
+
+export interface PaginatedCameras {
+  cameras: CameraRecord[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+  facets?: {
+    vendors: FacetItem[];
+    categories: FacetItem[];
+    series: FacetItem[];
+  };
+}
 
 /**
  * Camera catalog service.
@@ -18,9 +33,9 @@ export interface ICatalogService {
    *
    * @param query - Search query
    * @param filters - Optional filters
-   * @returns Matching cameras
+   * @returns Matching cameras with pagination info
    */
-  search(query: string, filters?: CatalogFilters): Promise<CameraRecord[]>;
+  search(query: string, filters?: CatalogFilters): Promise<PaginatedCameras>;
 
   /**
    * Get a single camera by ID.
