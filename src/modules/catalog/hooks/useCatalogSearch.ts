@@ -1,12 +1,13 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { useCatalogService } from '@/container/hooks';
-import type { CatalogFilters, CameraRecord } from '@/primitives';
+import type { CatalogFilters } from '@/primitives';
+import { PaginatedCameras } from '@/services/interfaces';
 
 export function useCatalogSearch(query: string, filters?: CatalogFilters) {
   const catalogService = useCatalogService();
 
-  return useQuery<CameraRecord[]>({
+  return useQuery<PaginatedCameras>({
     queryKey: ['catalog', 'search', query, filters],
     queryFn: () => catalogService.search(query, filters),
     placeholderData: (previousData) => previousData,

@@ -59,21 +59,21 @@ export function FilterPanel({ filters, stats, onFilterChange, className }: Filte
         <div className="flex flex-wrap gap-2">
           {stats?.vendors.map((v) => (
             <Badge
-              key={v.name}
-              variant={filters.vendors.includes(v.name) ? 'default' : 'secondary'}
+              key={v.value}
+              variant={filters.vendors.includes(v.value) ? 'default' : 'secondary'}
               className="cursor-pointer px-2 py-1"
-              onClick={() => toggleVendor(v.name)}
+              onClick={() => toggleVendor(v.value)}
               role="button"
-              aria-pressed={filters.vendors.includes(v.name)}
+              aria-pressed={filters.vendors.includes(v.value)}
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  toggleVendor(v.name);
+                  toggleVendor(v.value);
                 }
               }}
             >
-              {v.name} ({v.count})
+              {v.value} ({v.count})
             </Badge>
           ))}
           {!stats &&
@@ -90,21 +90,21 @@ export function FilterPanel({ filters, stats, onFilterChange, className }: Filte
         <div className="flex flex-wrap gap-2">
           {stats?.categories.map((c) => (
             <Badge
-              key={c.name}
-              variant={filters.categories.includes(c.name) ? 'default' : 'secondary'}
+              key={c.value}
+              variant={filters.categories.includes(c.value) ? 'default' : 'secondary'}
               className="cursor-pointer px-2 py-1"
-              onClick={() => toggleCategory(c.name)}
+              onClick={() => toggleCategory(c.value)}
               role="button"
-              aria-pressed={filters.categories.includes(c.name)}
+              aria-pressed={filters.categories.includes(c.value)}
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  toggleCategory(c.name);
+                  toggleCategory(c.value);
                 }
               }}
             >
-              {c.name} ({c.count})
+              {c.value} ({c.count})
             </Badge>
           ))}
           {!stats &&

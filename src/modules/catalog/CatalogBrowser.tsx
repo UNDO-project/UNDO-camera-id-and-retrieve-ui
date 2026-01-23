@@ -11,22 +11,29 @@ import { useCatalogStats } from './hooks/useCatalogStats';
 import { ErrorState } from '@/modules/common';
 import { toast } from '@/ui/components';
 
+import { Pagination } from './components/Pagination';
+
 export function CatalogBrowser({ initialFilters, onCameraSelect }: CatalogBrowserProps) {
   const [filters, setFilters] = useState<CatalogFilters>({
     searchQuery: '',
     vendors: [],
     categories: [],
     series: [],
+    page: 1,
+    limit: 20,
     ...initialFilters,
   });
 
   const { data: stats } = useCatalogStats();
   const {
-    data: cameras,
+    data: searchResult,
     isLoading: searchLoading,
     error,
     refetch,
   } = useCatalogSearch(filters.searchQuery, filters);
+
+  const cameras = searchResult?.cameras || [];
+  const pagination = searchResult?.pagination;
 
   useEffect(() => {
     if (error) {
@@ -35,11 +42,20 @@ export function CatalogBrowser({ initialFilters, onCameraSelect }: CatalogBrowse
   }, [error]);
 
   const handleSearchChange = useCallback((query: string) => {
-    setFilters((prev) => ({ ...prev, searchQuery: query }));
+    setFilters((prev) => ({ ...prev, searchQuery: query, page: 1 }));
   }, []);
 
   const handleFilterChange = useCallback((newFilters: CatalogFilters) => {
-    setFilters(newFilters);
+    setFilters((prev) => ({ ...newFilters, page: 1 }));
+  }, []);
+
+  const handlePageChange = useCallback((page: number) => {
+    setFilters((prev) => ({ ...prev, page }));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const handleLimitChange = useCallback((limit: number) => {
+    setFilters((prev) => ({ ...prev, limit, page: 1 }));
   }, []);
 
   return (
@@ -67,11 +83,23 @@ export function CatalogBrowser({ initialFilters, onCameraSelect }: CatalogBrowse
           {error ? (
             <ErrorState title="Failed to load cameras" error={error} onRetry={() => refetch()} />
           ) : (
-            <CameraGrid
-              cameras={cameras || []}
-              isLoading={searchLoading}
-              onCameraClick={onCameraSelect}
-            />
+            <>
+              <CameraGrid
+                cameras={cameras}
+                isLoading={searchLoading}
+                onCameraClick={onCameraSelect}
+              />
+              {pagination && !searchLoading && cameras.length > 0 && (
+                <Pagination
+                  page={pagination.page}
+                  limit={pagination.limit}
+                  total={pagination.total}
+                  totalPages={pagination.totalPages}
+                  onPageChange={handlePageChange}
+                  onLimitChange={handleLimitChange}
+                />
+              )}
+            </>
           )}
         </main>
       </div>

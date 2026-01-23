@@ -13,11 +13,23 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'www.hikvision.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'assets.hikvision.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8000',
+        pathname: '/api/v1/images/**',
+      },
     ],
     localPatterns: [
       {
         pathname: '/api/images',
-        // search: '',
+      },
+      {
+        pathname: '/api/v1/images/**',
       },
     ],
   },
@@ -35,6 +47,14 @@ const nextConfig: NextConfig = {
             value: 'public, max-age=31536000, immutable',
           },
         ],
+      },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/v1/images/:path*',
+        destination: 'http://localhost:8000/api/v1/images/:path*',
       },
     ];
   },
