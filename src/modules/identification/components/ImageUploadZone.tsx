@@ -5,9 +5,10 @@ import { FileImage } from 'lucide-react';
 interface ImageUploadZoneProps {
   onImageSelected: (file: File) => void;
   isProcessing?: boolean;
+  disabled?: boolean;
 }
 
-export function ImageUploadZone({ onImageSelected, isProcessing }: ImageUploadZoneProps) {
+export function ImageUploadZone({ onImageSelected, isProcessing, disabled }: ImageUploadZoneProps) {
   const handleDrop = (files: File[]) => {
     if (files.length > 0) {
       onImageSelected(files[0]);
@@ -20,7 +21,7 @@ export function ImageUploadZone({ onImageSelected, isProcessing }: ImageUploadZo
         onDrop={handleDrop}
         accept={['image/jpeg', 'image/png', 'image/webp']}
         maxSize={10 * 1024 * 1024} // 10MB
-        disabled={isProcessing}
+        disabled={isProcessing || disabled}
         className="h-64 border-dashed"
       >
         <div className="flex flex-col items-center gap-2 text-center">

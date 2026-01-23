@@ -84,7 +84,7 @@ export class RestCatalogService implements ICatalogService {
             horizontalFov: item.specs.horizontal_fov,
           }
         : undefined,
-      specifications: {},
+      specifications: item.specs || {},
       specificationsHtml: {},
     };
   }
@@ -100,7 +100,7 @@ export class RestCatalogService implements ICatalogService {
       productSeries: item.product_series,
       productCategory: item.category, // Fallback
       imageUrl: item.image_files?.[0] || item.image_urls?.[0],
-      images: item.image_urls || [],
+      images: (item.image_urls || []).concat(item.image_files || []),
       imageFiles: item.image_files || [],
       datasheetUrl: item.datasheet_url || undefined,
       specs: item.specs
@@ -110,7 +110,7 @@ export class RestCatalogService implements ICatalogService {
             horizontalFov: item.specs.horizontal_fov,
           }
         : undefined,
-      specifications: {},
+      specifications: item.specs || {},
       specificationsHtml: {},
     };
   }
