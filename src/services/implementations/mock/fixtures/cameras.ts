@@ -17,6 +17,11 @@ export const mockCameras: CameraRecord[] = [
     ],
     datasheetUrl:
       'https://www.axis.com/dam/public/e6/5a/08/datasheet-axis-m3045-v-network-camera-en-US-407238.pdf',
+    specs: {
+      maxResolution: '1920x1080',
+      horizontalFov: '106°',
+      lens: 'Fixed iris',
+    },
     specifications: {
       resolution: '1920x1080',
       fov: '106 degrees',
@@ -36,6 +41,10 @@ export const mockCameras: CameraRecord[] = [
     imageUrl:
       'https://www.hikvision.com/content/dam/hikvision/products/IP-Products/Network-Cameras/Pro-Series/EasyIP-2-0-Plus/DS-2CD2143G0-I/front.png',
     images: [],
+    specs: {
+      maxResolution: '2688x1520',
+      horizontalFov: '98°',
+    },
     specifications: {
       resolution: '2688x1520',
       fov: '98 degrees',
@@ -53,6 +62,10 @@ export const mockCameras: CameraRecord[] = [
     productCategory: 'Network Cameras',
     productSeries: 'X Series',
     images: [],
+    specs: {
+      maxResolution: '1920x1080',
+      horizontalFov: '112°',
+    },
     specifications: {
       resolution: '1920x1080',
       fov: '112 degrees',
