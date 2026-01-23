@@ -55,11 +55,28 @@ export function CameraCard({ camera, onClick, className }: CameraCardProps) {
       </CardHeader>
 
       <CardContent className="flex-grow p-4 pt-2">
-        <div className="text-muted-foreground line-clamp-2 min-h-[2.5em] text-sm">
+        <div className="text-muted-foreground mb-4 line-clamp-2 min-h-[2.5em] text-sm">
           {camera.description || 'No description available.'}
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-1">
+        {camera.specs && (
+          <div className="mb-4 grid grid-cols-2 gap-2 text-xs">
+            {camera.specs.maxResolution && (
+              <div>
+                <span className="text-muted-foreground block font-medium">Resolution</span>
+                {camera.specs.maxResolution}
+              </div>
+            )}
+            {camera.specs.lens && (
+              <div>
+                <span className="text-muted-foreground block font-medium">Lens</span>
+                {camera.specs.lens}
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="flex flex-wrap gap-1">
           <span className="bg-secondary inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-gray-500/10 ring-inset">
             {camera.category}
           </span>
