@@ -1,37 +1,63 @@
-import type { ICatalogService } from '@/services/interfaces';
+import type { ICatalogService, PaginatedCameras } from '@/services/interfaces';
 import type { CameraRecord, CatalogFilters, CatalogStats } from '@/primitives';
 import type { ApiClient } from '@/api';
 import { ENDPOINTS } from '@/api/endpoints';
-import { transformLocalImagePath, transformLocalImagePaths } from '@/utils/imagePath';
 
 export class RestCatalogService implements ICatalogService {
   constructor(private apiClient: ApiClient) {}
 
   async getStats(): Promise<CatalogStats> {
-    const response = await this.apiClient.get(ENDPOINTS.CATALOG_STATS);
-    const data = response.data;
+    const [statsResponse, facetsResponse] = await Promise.all([
+      this.apiClient.get(ENDPOINTS.CATALOG_STATS),
+      this.apiClient.get(ENDPOINTS.CATALOG_FACETS),
+    ]);
 
-    // Map API response to CatalogStats primitive
+    const statsData = statsResponse.data;
+    const facetsData = facetsResponse.data;
+
     return {
-      totalCameras: data.total_cameras,
-      vendors: [], // Not currently returned by stats API, would need separate call or update
-      categories: [], // Not currently returned by stats API
-      embeddingsLoaded: data.embeddings_loaded,
+      totalCameras: statsData.total_cameras,
+      vendors: facetsData.vendors,
+      categories: facetsData.categories,
+      series: facetsData.series,
+      embeddingsLoaded: statsData.embeddings_loaded,
     };
   }
 
-  async search(query: string, filters?: CatalogFilters): Promise<CameraRecord[]> {
-    // Note: The current API doesn't have a direct search endpoint in openapi.json.
-    // It seems we might need to implement client-side search or add an endpoint.
-    // For now, returning empty array as placeholder or we could fetch all and filter.
-    console.warn('Server-side search not implemented in API yet.');
-    return [];
+  async search(query: string, filters?: CatalogFilters): Promise<PaginatedCameras> {
+    const params = new URLSearchParams();
+
+    params.append('page', String(filters?.page || 1));
+    params.append('limit', String(filters?.limit || 20));
+
+    if (filters?.vendors?.[0]) params.append('vendor', filters.vendors[0]);
+    if (filters?.categories?.[0]) params.append('category', filters.categories[0]);
+    if (filters?.series?.[0]) params.append('series', filters.series[0]);
+
+    // Prefer filters.searchQuery if available, otherwise use query arg
+    const searchQuery = filters?.searchQuery || query;
+    if (searchQuery) params.append('search', searchQuery);
+
+    const response = await this.apiClient.get(`${ENDPOINTS.CATALOG_CAMERAS}?${params.toString()}`);
+    const data = response.data;
+
+    const cameras = data.data.map((item: any) => this.mapCameraSummary(item));
+
+    return {
+      cameras,
+      pagination: {
+        page: data.pagination.page,
+        limit: data.pagination.limit,
+        total: data.pagination.total,
+        totalPages: data.pagination.total_pages,
+      },
+      facets: data.facets,
+    };
   }
 
   async getCamera(id: string): Promise<CameraRecord> {
-    // Note: No direct "get camera by ID" endpoint in openapi.json either.
-    // Assuming we might need to implement this later or use a different approach.
-    throw new Error('Get camera by ID not implemented in API');
+    const response = await this.apiClient.get(ENDPOINTS.CATALOG_CAMERA_ID(id));
+    return this.mapCameraDetail(response.data);
   }
 
   async getRelatedCameras(cameraId: string, type: 'series' | 'category'): Promise<CameraRecord[]> {
@@ -39,11 +65,53 @@ export class RestCatalogService implements ICatalogService {
     return [];
   }
 
-  private transformCamera(camera: CameraRecord): CameraRecord {
+  private mapCameraSummary(item: any): CameraRecord {
     return {
-      ...camera,
-      imageUrl: transformLocalImagePath(camera.imageUrl),
-      images: transformLocalImagePaths(camera.images || []),
+      cameraId: item.camera_id,
+      modelName: item.model_name,
+      displayName: item.display_name,
+      description: undefined,
+      vendor: item.source,
+      category: item.category,
+      productSeries: item.product_series,
+      productCategory: item.category, // Fallback
+      imageUrl: item.thumbnail_url,
+      images: [],
+      specs: item.specs
+        ? {
+            maxResolution: item.specs.max_resolution,
+            lens: item.specs.lens,
+            horizontalFov: item.specs.horizontal_fov,
+          }
+        : undefined,
+      specifications: {},
+      specificationsHtml: {},
+    };
+  }
+
+  private mapCameraDetail(item: any): CameraRecord {
+    return {
+      cameraId: item.camera_id,
+      modelName: item.model_name,
+      displayName: item.display_name,
+      description: item.description || undefined,
+      vendor: item.source,
+      category: item.category,
+      productSeries: item.product_series,
+      productCategory: item.category, // Fallback
+      imageUrl: item.image_files?.[0] || item.image_urls?.[0],
+      images: item.image_urls || [],
+      imageFiles: item.image_files || [],
+      datasheetUrl: item.datasheet_url || undefined,
+      specs: item.specs
+        ? {
+            maxResolution: item.specs.max_resolution,
+            lens: item.specs.lens,
+            horizontalFov: item.specs.horizontal_fov,
+          }
+        : undefined,
+      specifications: {},
+      specificationsHtml: {},
     };
   }
 }
