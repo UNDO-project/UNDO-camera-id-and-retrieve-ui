@@ -1,7 +1,9 @@
+'use client';
+
 import { useCallback, useRef, useEffect } from 'react';
 
 interface UseFrameCaptureOptions {
-  videoRef: React.RefObject<HTMLVideoElement>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
   targetFps: number;
   quality?: number;
   enabled?: boolean;

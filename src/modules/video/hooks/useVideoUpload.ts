@@ -1,3 +1,5 @@
+'use client';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useVideoUploadService } from '@/container/hooks';
 import type { VideoFile, VideoTask, VideoProcessingOptions } from '@/primitives';
@@ -13,7 +15,7 @@ export function useVideoUpload() {
 
   return useMutation<VideoTask, Error, UploadVariables>({
     mutationFn: ({ video, options }) => service.upload(video, options),
-    onSuccess: (task) => {
+    onSuccess: (_task) => {
       // Invalidate any related queries
       queryClient.invalidateQueries({ queryKey: ['video', 'tasks'] });
     },

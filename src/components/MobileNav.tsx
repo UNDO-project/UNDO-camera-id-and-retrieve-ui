@@ -3,10 +3,25 @@
 import Link from 'next/link';
 import { Menu, Aperture } from 'lucide-react';
 import { Button, Sheet, SheetContent, SheetTrigger } from '@/ui/components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <Button variant="ghost" size="icon" className="md:hidden">
+        <Menu className="h-5 w-5" />
+        <span className="sr-only">Toggle menu</span>
+      </Button>
+    );
+  }
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

@@ -1,6 +1,8 @@
-import { Button, Label, Select, Slider, Card } from '@/ui/components';
-import { StreamConfig, StreamState } from '@/primitives';
-import { PlayIcon, StopIcon, Settings2Icon } from 'lucide-react';
+'use client';
+
+import { Button, Label, Slider, Card } from '@/ui/components';
+import { StreamConfig } from '@/primitives';
+import { PlayIcon, Square, Settings2Icon } from 'lucide-react';
 import { cn } from '@/utils/cn';
 
 interface StreamControlsProps {
@@ -46,7 +48,7 @@ export function StreamControls({
               disabled={isConnecting}
               className="gap-1"
             >
-              <StopIcon className="h-4 w-4" />
+              <Square className="h-4 w-4" fill="currentColor" />
               Stop
             </Button>
           ) : (

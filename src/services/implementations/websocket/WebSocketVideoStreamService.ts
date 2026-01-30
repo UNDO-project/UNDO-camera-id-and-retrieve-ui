@@ -20,8 +20,20 @@ export class WebSocketVideoStreamService implements IVideoStreamService {
   private reconnectTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
   constructor(baseUrl: string) {
-    // Convert http(s) to ws(s)
-    this.baseUrl = baseUrl.replace(/^http/, 'ws');
+    if (baseUrl.startsWith('http')) {
+      this.baseUrl = baseUrl.replace(/^http/, 'ws');
+    } else if (baseUrl.startsWith('//')) {
+      this.baseUrl = `ws:${baseUrl}`;
+    } else if (baseUrl.startsWith('/')) {
+      // Handle root-relative paths by using current origin
+      // Note: This assumes browser environment
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const host = window.location.host;
+      this.baseUrl = `${protocol}//${host}${baseUrl}`;
+    } else {
+      // Default fallback or assume it's just a host
+      this.baseUrl = baseUrl.startsWith('ws') ? baseUrl : `ws://${baseUrl}`;
+    }
   }
 
   async connect(config: StreamConfig): Promise<void> {
@@ -165,7 +177,7 @@ export class WebSocketVideoStreamService implements IVideoStreamService {
       if (this.config) {
         try {
           await this.connect(this.config);
-        } catch (e) {
+        } catch (_e) {
           // Will retry on next disconnect
         }
       }

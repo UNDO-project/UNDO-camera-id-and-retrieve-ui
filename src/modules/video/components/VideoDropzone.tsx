@@ -1,3 +1,5 @@
+'use client';
+
 import { Dropzone } from '@/ui/components';
 import { cn } from '@/utils/cn';
 import { FilmIcon } from 'lucide-react';
