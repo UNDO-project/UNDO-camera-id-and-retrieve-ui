@@ -8,3 +8,5 @@ export * from './IdentificationParams';
 export * from './CatalogFilters';
 export * from './CatalogStats';
 export * from './ProcessingState';
+export * from './Video';
+export * from './VideoStream';
