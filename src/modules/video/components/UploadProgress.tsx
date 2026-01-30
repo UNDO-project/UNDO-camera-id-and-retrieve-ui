@@ -21,7 +21,7 @@ export function UploadProgress({ progress, onDownload, onReset, className }: Upl
     <Card className={cn('p-6', className)}>
       <div className="mb-4 flex items-start justify-between">
         <div>
-          <h3 className="max-w-[200px] truncate font-medium sm:max-w-md" title={progress.filename}>
+          <h3 className="max-w-50 truncate font-medium sm:max-w-md" title={progress.filename}>
             {progress.filename}
           </h3>
           <p className="text-muted-foreground mt-1 text-sm">

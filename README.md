@@ -71,10 +71,14 @@ We rely on a robust multi-layered testing strategy using **Vitest**.
 
 ### Running Tests
 
-| Command              | Description                         |
-| :------------------- | :---------------------------------- |
-| `npm run test`       | Run all tests once (CI mode)        |
-| `npm run test:watch` | Run tests in interactive watch mode |
+| Command                    | Description                                     |
+| :------------------------- | :---------------------------------------------- |
+| `npm run test`             | Run all tests once (CI mode)                    |
+| `npm run test:watch`       | Run tests in interactive watch mode             |
+| `npm run test:unit`        | Run unit tests (Modules & Services)             |
+| `npm run test:integration` | Run full integration tests                      |
+| `npm run test:video`       | Run video-feature specific tests                |
+| `./scripts/test.sh`        | **Recommended**: Interactive menu-driven runner |
 
 ### Test Strategy
 
