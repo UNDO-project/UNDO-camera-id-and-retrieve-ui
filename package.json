@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:unit": "vitest run src/modules src/services",
+    "test:integration": "vitest run src/test/integration",
+    "test:video": "vitest run video",
+    "test:ui": "vitest --ui"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
