@@ -2,12 +2,16 @@ import { createApiClient } from '@/api';
 import { RestIdentificationService } from './implementations/rest/RestIdentificationService';
 import { RestCatalogService } from './implementations/rest/RestCatalogService';
 import { RestHealthService } from './implementations/rest/RestHealthService';
+import { RestVideoUploadService } from './implementations/rest/RestVideoUploadService';
+import { WebSocketVideoStreamService } from './implementations/websocket/WebSocketVideoStreamService';
 import { BrowserImageStore } from './implementations/storage/BrowserImageStore';
 import { NoOpResultStore } from './implementations/storage/NoOpResultStore';
 import {
   MockIdentificationService,
   MockCatalogService,
   MockHealthService,
+  MockVideoUploadService,
+  MockVideoStreamService,
 } from './implementations/mock';
 import type {
   IIdentificationService,
@@ -15,6 +19,8 @@ import type {
   IHealthService,
   IResultStore,
   IImageStore,
+  IVideoUploadService,
+  IVideoStreamService,
 } from './interfaces';
 
 export interface Services {
@@ -23,6 +29,8 @@ export interface Services {
   health: IHealthService;
   resultStore: IResultStore;
   imageStore: IImageStore;
+  videoUpload: IVideoUploadService;
+  videoStream: IVideoStreamService;
 }
 
 export interface ServiceConfig {
@@ -38,6 +46,8 @@ export function createServices(config: ServiceConfig): Services {
       health: new MockHealthService(),
       resultStore: new NoOpResultStore(),
       imageStore: new BrowserImageStore(),
+      videoUpload: new MockVideoUploadService(),
+      videoStream: new MockVideoStreamService(),
     };
   }
 
@@ -49,5 +59,7 @@ export function createServices(config: ServiceConfig): Services {
     health: new RestHealthService(apiClient),
     resultStore: new NoOpResultStore(),
     imageStore: new BrowserImageStore(),
+    videoUpload: new RestVideoUploadService(apiClient, config.apiBaseUrl),
+    videoStream: new WebSocketVideoStreamService(config.apiBaseUrl),
   };
 }
