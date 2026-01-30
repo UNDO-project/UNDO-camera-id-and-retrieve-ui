@@ -5,6 +5,8 @@ import type {
   IHealthService,
   IResultStore,
   IImageStore,
+  IVideoUploadService,
+  IVideoStreamService,
 } from '@/services/interfaces';
 
 export function useIdentificationService(): IIdentificationService {
@@ -25,4 +27,12 @@ export function useResultStore(): IResultStore {
 
 export function useImageStore(): IImageStore {
   return useServices().imageStore;
+}
+
+export function useVideoUploadService(): IVideoUploadService {
+  return useServices().videoUpload;
+}
+
+export function useVideoStreamService(): IVideoStreamService {
+  return useServices().videoStream;
 }
