@@ -109,10 +109,10 @@ src/
 ├── api/            # HTTP Client and Endpoint definitions
 ├── app/            # Next.js Pages and Layouts
 ├── container/      # Service Container & Dependency Injection
-├── modules/        # Feature Modules (Identification, Catalog)
+├── modules/        # Feature Modules (Identification, Catalog, Video)
 ├── platform/       # Platform Adapters (Web implementations)
 ├── primitives/     # Core Data Types (Domain Entities)
-├── services/       # Service Interfaces & Implementations
+├── services/       # Service Interfaces & Implementations (REST, WebSocket)
 ├── test/           # Test Setup & Utilities
 └── ui/             # Reusable UI Components
 ```
