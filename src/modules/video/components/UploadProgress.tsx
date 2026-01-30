@@ -1,3 +1,5 @@
+'use client';
+
 import { VideoTaskProgress } from '@/primitives';
 import { Progress, Badge, Card, Button } from '@/ui/components';
 import { cn } from '@/utils/cn';

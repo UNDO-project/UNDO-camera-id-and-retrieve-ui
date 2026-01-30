@@ -1,3 +1,5 @@
+'use client';
+
 import { useQuery } from '@tanstack/react-query';
 import { useVideoStreamService } from '@/container/hooks';
 import type { StreamStats } from '@/primitives';

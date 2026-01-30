@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef, useState } from 'react';
 import { useVideoStream, useFrameCapture } from './hooks';
 import { StreamDisplay } from './components/StreamDisplay';
@@ -24,31 +26,93 @@ export function VideoStreamFeature({ className }: VideoStreamFeatureProps) {
     autoConnect: false,
   });
 
+  const isConnecting = state.status === 'connecting';
+  const isStreamConnected = state.status === 'connected';
+
   // Start camera when component mounts or when needed
   const startCamera = async () => {
     try {
       setCameraError(null);
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-          facingMode: 'environment',
-        },
-      });
+
+      // Check if mediaDevices API is available (requires secure context)
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error(
+          'Camera API not available. Please ensure you are using HTTPS or localhost.'
+        );
+      }
+
+      // Check if any video input devices exist
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter((device) => device.kind === 'videoinput');
+      console.log('Found video devices:', videoDevices);
+
+      if (videoDevices.length === 0) {
+        throw new Error('No camera found on this device.');
+      }
+
+      let stream: MediaStream | null = null;
+
+      // Try to get rear camera first (skip complex constraints on Firefox)
+      const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
+
+      if (!isFirefox) {
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+              facingMode: { ideal: 'environment' },
+            },
+          });
+        } catch (err) {
+          console.warn('Failed to get preferred camera, will try fallback...', err);
+        }
+      }
+
+      // Fallback to simple constraints (or primary for Firefox)
+      if (!stream) {
+        console.log('Attempting simple video constraints...');
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
+      }
+
+      console.log('Got stream:', stream);
+      console.log('Stream tracks:', stream.getVideoTracks());
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        await videoRef.current.play();
+        console.log('Video playing, readyState:', videoRef.current.readyState);
       }
     } catch (err) {
       console.error('Failed to access camera:', err);
-      setCameraError('Could not access camera. Please ensure you have granted permission.');
+      const errorMessage = err instanceof Error ? err.message : String(err);
+
+      // Provide more specific error messages
+      if (errorMessage.includes('Permission denied') || errorMessage.includes('NotAllowedError')) {
+        setCameraError(
+          'Camera permission denied. Please allow camera access in your browser settings.'
+        );
+      } else if (errorMessage.includes('NotFoundError') || errorMessage.includes('not be found')) {
+        setCameraError('No camera found. Please connect a camera and try again.');
+      } else if (errorMessage.includes('NotReadableError')) {
+        setCameraError(
+          'Camera is in use by another application. Please close other apps using the camera.'
+        );
+      } else {
+        setCameraError(
+          errorMessage ||
+            'Could not access camera. Please ensure you have granted permission and a camera is available.'
+        );
+      }
     }
   };
 
   useFrameCapture({
     videoRef,
     targetFps: config.targetFps,
-    enabled: isConnected,
+    enabled: isStreamConnected,
     onCapture: sendFrame,
   });
 
@@ -62,9 +126,6 @@ export function VideoStreamFeature({ className }: VideoStreamFeatureProps) {
       await connect();
     }
   };
-
-  const isConnecting = state.status === 'connecting';
-  const isStreamConnected = state.status === 'connected';
 
   return (
     <div className={cn('grid gap-6 lg:grid-cols-[1fr_300px]', className)}>
@@ -100,8 +161,14 @@ export function VideoStreamFeature({ className }: VideoStreamFeatureProps) {
           )}
         </div>
 
-        {/* Hidden Video Input (for capture) */}
-        <video ref={videoRef} className="hidden" muted playsInline />
+        {/* Video Input (for capture) - small preview for debugging */}
+        <video
+          ref={videoRef}
+          className="aspect-video w-48 rounded border border-dashed opacity-50"
+          muted
+          playsInline
+          autoPlay
+        />
 
         {/* Local Preview (optional, helpful for debugging) */}
         {/* <div className="w-48 aspect-video bg-black rounded overflow-hidden opacity-50">

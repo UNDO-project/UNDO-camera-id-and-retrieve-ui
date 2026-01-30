@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { useVideoFile, useVideoUpload, useVideoProgress } from './hooks';
 import { VideoDropzone } from './components/VideoDropzone';

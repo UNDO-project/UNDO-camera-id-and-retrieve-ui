@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useVideoStreamService } from '@/container/hooks';
 import type { StreamConfig, StreamFrame, StreamState } from '@/primitives';

@@ -1,3 +1,5 @@
+'use client';
+
 import { useQuery } from '@tanstack/react-query';
 import { useVideoUploadService } from '@/container/hooks';
 import type { VideoTaskProgress } from '@/primitives';
