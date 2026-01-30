@@ -34,6 +34,20 @@ export function MobileNav() {
             Identify
           </Link>
           <Link
+            href="/video"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            Video
+          </Link>
+          <Link
+            href="/video/stream"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            Stream
+          </Link>
+          <Link
             href="/catalog"
             className="text-muted-foreground hover:text-foreground transition-colors"
             onClick={() => setOpen(false)}
