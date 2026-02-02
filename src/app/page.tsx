@@ -61,7 +61,7 @@ export default function Home() {
             <Button asChild variant="link" size="lg" className="mt-4 text-base">
               <Link href="/catalog" className="flex items-center gap-2">
                 <Search className="h-4 w-4" />
-                or Browse Catalog
+                or Browse Dataset
               </Link>
             </Button>
           </div>
@@ -115,7 +115,7 @@ export default function Home() {
           <div className="mb-16 text-center">
             <h2 className="mb-4 text-3xl font-bold sm:text-4xl">Multiple Input Methods</h2>
             <p className="text-muted-foreground mx-auto max-w-2xl">
-              Experiment with different approaches to camera detection—from static images to
+              Experiment with different approaches to camera detection from static images to
               real-time streaming analysis.
             </p>
           </div>

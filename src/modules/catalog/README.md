@@ -1,6 +1,6 @@
-# Catalog Module
+# Dataset Module
 
-Browse and search the camera catalog.
+Browse and search the camera dataset.
 
 ## Public Interface
 

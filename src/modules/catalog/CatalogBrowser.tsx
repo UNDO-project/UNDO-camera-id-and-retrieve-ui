@@ -62,9 +62,9 @@ export function CatalogBrowser({ initialFilters, onCameraSelect }: CatalogBrowse
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Camera Catalog</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Camera Dataset</h1>
           <p className="text-muted-foreground">
-            Browse and search our extensive collection of security cameras.
+            Browse and search our dataset of security cameras.
           </p>
         </div>
         <SearchBar

@@ -8,7 +8,16 @@ export function Footer() {
         <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
           <Aperture className="h-6 w-6" />
           <p className="text-muted-foreground text-center text-sm leading-loose md:text-left">
-            Built by the UNDO team. The source code is available on{' '}
+            Built by the{' '}
+            <a
+              href="https://undo-project.info"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium underline underline-offset-4"
+            >
+              UNDO team
+            </a>
+            . The source code is available on{' '}
             <a
               href="https://github.com/undo-team/cctv-scrapers"
               target="_blank"
