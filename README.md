@@ -2,32 +2,34 @@
 
 > **Camera Identification and Research**
 >
-> AI tool for identifying security cameras from images.
+> An experimental platform for researching computer vision approaches to CCTV identification.
 
 ![Status](https://img.shields.io/badge/status-active-success.svg)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![Tech](https://img.shields.io/badge/built%20with-Next.js-black)
 
 ## 🚀 Overview
 
-cIDaR is a specialized tool designed for researchers. It employs a computer vision pipeline to detect, crop, and match CCTV camera models against a comprehensive catalog of professional equipment.
+cIDaR is a research tool exploring how computer vision can identify surveillance cameras from images and video. It experiments with detection, feature extraction, and similarity matching against a dataset of known camera models.
 
-## 🏗 Architecture
+This is a platform for transparency research, investigative journalism, and civic technology applications.
 
-This project is built on **Black Box Architecture** principles, prioritizing modularity, testing, and replaceability.
+## ✨ Features
 
-- **Primitives**: Core domain types (e.g., `Image`, `Detection`, `CameraRecord`) are defined centrally and shared.
-- **Services**: Business logic is defined by strict Interfaces (`IIdentificationService`). Implementations (REST, Mock) are injected via a **Dependency Injection** container.
-- **Modules**: Features like `Identification` and `Catalog` are self-contained "black boxes" that own their UI, hooks, and logic.
-- **UI Layer**: Built with **shadcn/ui** and Tailwind CSS, separating headless logic from platform-specific renderers.
+- **Image Upload**: Test single-frame camera detection and identification
+- **Video Processing**: Analyze recorded video frame-by-frame
+- **Live Streaming**: Real-time detection via WebSocket connections
+- **Camera Dataset**: Browse indexed camera models with specifications
 
 ## 🛠 Tech Stack
 
-- **Framework**: Next.js 14+ (App Router)
-- **Language**: TypeScript (Strict Mode)
-- **Styling**: Tailwind CSS & shadcn/ui
-- **State Management**: TanStack Query
-- **Testing**: Vitest & React Testing Library
+| Layer     | Technology                     |
+| :-------- | :----------------------------- |
+| Framework | Next.js 15+ (App Router)       |
+| Language  | TypeScript (Strict Mode)       |
+| Styling   | Tailwind CSS & shadcn/ui       |
+| State     | TanStack Query                 |
+| Testing   | Vitest & React Testing Library |
 
 ## 🚦 Getting Started
 
@@ -39,17 +41,12 @@ This project is built on **Black Box Architecture** principles, prioritizing mod
 ### Installation
 
 ```bash
-# Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/jethronap/UNDO-camera-id-and-retrieve-ui
 cd cidar-frontend
-
-# Install dependencies
 npm install
 ```
 
 ### Development
-
-Start the development server with hot-reload:
 
 ```bash
 npm run dev
@@ -57,66 +54,61 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-### Local Image Proxy
+### Environment
 
-When running locally, the application includes a proxy route (`/api/images`) to serve images from the local file system (e.g., `/Users/...` or `C:\...`).
-This allows the UI to display images stored outside the `public/` directory without browser security errors.
-The `ICatalogService` implementations automatically transform these local paths into proxy URLs.
+Copy `.env.example` to `.env.local` and configure the API URL:
 
-**Important:** This is a development-only feature. In production, images should be served via a CDN or proper object storage, and the path transformation logic in `src/utils/imagePath.ts` should be disabled or updated.
+```bash
+cp .env.example .env.local
+```
 
 ## 🧪 Testing
 
-We rely on a robust multi-layered testing strategy using **Vitest**.
-
-### Running Tests
-
-| Command                    | Description                                     |
-| :------------------------- | :---------------------------------------------- |
-| `npm run test`             | Run all tests once (CI mode)                    |
-| `npm run test:watch`       | Run tests in interactive watch mode             |
-| `npm run test:unit`        | Run unit tests (Modules & Services)             |
-| `npm run test:integration` | Run full integration tests                      |
-| `npm run test:video`       | Run video-feature specific tests                |
-| `./scripts/test.sh`        | **Recommended**: Interactive menu-driven runner |
-
-### Test Strategy
-
-1.  **Service Tests**: Unit tests for business logic and API mappings.
-    - _Example:_ `src/services/implementations/rest/__tests__/RestIdentificationService.test.ts`
-2.  **Module Tests**: Component and Hook tests to verify feature logic in isolation.
-    - _Example:_ `src/modules/identification/__tests__/IdentificationFeature.test.tsx`
-3.  **Integration Tests**: Full workflow tests simulating real user interactions.
-    - _Example:_ `src/test/integration/IdentificationFlow.test.tsx`
-
-> **Note:** Tests run against a simulated environment using `jsdom` and mock service implementations.
-
-## 🛡 Quality Control
-
-We enforce code quality automatically using **Husky** and **lint-staged**.
-
-### Pre-Commit Hooks
-
-Before every commit, the following checks run automatically on _staged files only_:
-
-1.  **Linting**: ESLint checks for code errors and best practices.
-2.  **Formatting**: Prettier ensures consistent code style.
-
-If any check fails, the commit is blocked. Fix the reported issues and try committing again.
+| Command                    | Description                    |
+| :------------------------- | :----------------------------- |
+| `npm run test`             | Run all tests (CI mode)        |
+| `npm run test:watch`       | Interactive watch mode         |
+| `npm run test:unit`        | Unit tests only                |
+| `npm run test:integration` | Integration tests only         |
+| `./scripts/test.sh`        | Interactive menu-driven runner |
 
 ## 📂 Project Structure
 
-A quick map of the `src` directory:
-
-```text
+```
 src/
 ├── api/            # HTTP Client and Endpoint definitions
 ├── app/            # Next.js Pages and Layouts
+├── components/     # Shared Components (Header, Footer, etc.)
 ├── container/      # Service Container & Dependency Injection
+├── lib/            # Third-party library configurations
 ├── modules/        # Feature Modules (Identification, Catalog, Video)
 ├── platform/       # Platform Adapters (Web implementations)
 ├── primitives/     # Core Data Types (Domain Entities)
-├── services/       # Service Interfaces & Implementations (REST, WebSocket)
+├── services/       # Service Interfaces & Implementations
 ├── test/           # Test Setup & Utilities
-└── ui/             # Reusable UI Components
+├── ui/             # Reusable UI Components (shadcn/ui)
+└── utils/          # Utility functions
 ```
+
+## 🏗 Architecture
+
+The frontend uses a decoupled "Black Box" architecture:
+
+- **Services**: Business logic defined by interfaces, with injectable implementations
+- **Modules**: Self-contained features owning their UI, hooks, and logic
+- **Primitives**: Shared domain types across the application
+
+This makes it easier to experiment with different CV approaches without rewriting the UI.
+
+## 🔒 Privacy
+
+cIDaR keeps no logs. Uploaded images and videos are processed in memory and deleted after analysis. See the [Privacy page](https://cidar.app/privacy) for details.
+
+## 📄 License
+
+This project is licensed under the [GNU General Public License v3.0](LICENSE).
+
+## 🔗 Links
+
+- [UNDO Project](https://undo-project.info)
+- [Backend Repository](https://github.com/undo-team/cctv-scrapers)
