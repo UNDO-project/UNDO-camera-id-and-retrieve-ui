@@ -4,7 +4,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 export const metadata: Metadata = {
   title: 'Camera Catalog | cIDaR',
-  description: 'Browse and search our extensive collection of security cameras.',
+  description: 'Browse and search our dataset of security cameras.',
 };
 
 export default function CatalogPage() {

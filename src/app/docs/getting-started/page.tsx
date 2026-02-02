@@ -11,8 +11,8 @@ export default function GettingStartedPage() {
   const steps = [
     {
       title: 'Clone the Repository',
-      description: 'Get the source code from GitHub.',
-      command: 'git clone https://github.com/your-org/cidar-frontend.git',
+      description: 'Get the source code from the project repository.',
+      command: 'git clone https://github.com/jethronap/UNDO-camera-id-and-retrieve-ui',
       icon: Laptop,
     },
     {
@@ -79,7 +79,7 @@ export default function GettingStartedPage() {
                 backend connection is active.
               </p>
               <Button asChild size="sm">
-                <Link href="/">Go to Home</Link>
+                <Link href="/docs">Go to Docs</Link>
               </Button>
             </div>
           </div>

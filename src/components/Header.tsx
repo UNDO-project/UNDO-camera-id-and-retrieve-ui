@@ -37,7 +37,7 @@ export function Header() {
     { title: 'Identify', href: '/identify' },
     { title: 'Video', href: '/video' },
     { title: 'Stream', href: '/video/stream' },
-    { title: 'Catalog', href: '/catalog' },
+    { title: 'Dataset', href: '/catalog' },
     { title: 'About', href: '/about' },
     { title: 'Docs', href: '/docs' },
   ];
