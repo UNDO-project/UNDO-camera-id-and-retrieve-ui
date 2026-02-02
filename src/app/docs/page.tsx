@@ -11,21 +11,21 @@ export default function DocsPage() {
   const sections = [
     {
       title: 'Getting Started',
-      description: 'Learn how to set up the project locally and understand the core concepts.',
+      description: 'Set up the project locally and understand the core architecture.',
       icon: Rocket,
       href: '/docs/getting-started',
       color: 'text-blue-500',
     },
     {
       title: 'Identification Pipeline',
-      description: 'Deep dive into the computer vision pipeline from detection to matching.',
+      description: 'How the experimental CV pipeline detects and matches cameras.',
       icon: Cpu,
       href: '/docs/pipeline',
       color: 'text-purple-500',
     },
     {
       title: 'API Reference',
-      description: 'Detailed information about the backend endpoints and data structures.',
+      description: 'Backend endpoints for identification, video processing, and catalog access.',
       icon: Code,
       href: '/docs/api',
       color: 'text-green-500',
@@ -37,8 +37,8 @@ export default function DocsPage() {
       <div className="mb-12 max-w-2xl">
         <h1 className="mb-4 text-4xl font-bold tracking-tight">Documentation</h1>
         <p className="text-muted-foreground text-lg">
-          Welcome to the technical documentation for cIDaR. Here you will find everything you need
-          to understand, contribute to, or integrate with the platform.
+          Technical documentation for the cIDaR research project. These docs cover the experimental
+          identification pipeline, API endpoints, and how to run the platform locally.
         </p>
       </div>
 
@@ -68,9 +68,9 @@ export default function DocsPage() {
             Project Architecture
           </h2>
           <p className="text-muted-foreground">
-            cIDaR follows a strict <strong>Black Box Architecture</strong> designed for maximum
-            replaceability and platform independence. This ensures that the frontend remains
-            isolated from the specifics of the backend implementation.
+            cIDaR uses a decoupled <strong>Black Box Architecture</strong> to keep the frontend
+            independent from backend implementation details. This makes it easier to experiment with
+            different CV approaches without rewriting the UI.
           </p>
           <div className="space-y-4">
             {[
@@ -85,11 +85,6 @@ export default function DocsPage() {
               </div>
             ))}
           </div>
-          <Button asChild variant="outline">
-            <Link href="https://github.com/your-repo/docs/architecture" target="_blank">
-              View Architecture Plan
-            </Link>
-          </Button>
         </div>
 
         <div className="bg-muted/30 rounded-2xl border p-8">

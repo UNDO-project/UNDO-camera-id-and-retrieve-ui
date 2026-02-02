@@ -10,25 +10,25 @@ export default function PipelineDocsPage() {
     {
       title: 'Image Pre-processing',
       description:
-        'The uploaded image is resized and normalized. Metadata like resolution and aspect ratio are extracted.',
+        'Input images are resized and normalized. Metadata like resolution and aspect ratio are extracted for processing.',
       icon: ImageIcon,
     },
     {
       title: 'Object Detection (YOLOv8)',
       description:
-        'A custom-trained YOLOv8 model scans the image to locate security cameras. It outputs bounding boxes and confidence scores.',
+        'A custom-trained YOLOv8 model attempts to locate security cameras in the image, outputting bounding boxes and confidence scores.',
       icon: Search,
     },
     {
       title: 'Feature Extraction',
       description:
-        'Detected camera regions are passed through a deep neural network to generate unique 512-dimensional vector embeddings.',
+        'Detected regions are passed through a neural network to generate 512-dimensional vector embeddings representing visual features.',
       icon: Cpu,
     },
     {
       title: 'Vector Matching',
       description:
-        'The embeddings are matched against our catalog using FAISS (Facebook AI Similarity Search) for sub-millisecond retrieval.',
+        'Embeddings are compared against the dataset using FAISS for similarity search. Results are ranked by cosine similarity.',
       icon: CheckCircle,
     },
   ];
@@ -38,8 +38,9 @@ export default function PipelineDocsPage() {
       <div className="mb-12">
         <h1 className="mb-4 text-4xl font-bold tracking-tight">Identification Pipeline</h1>
         <p className="text-muted-foreground text-lg">
-          cIDaR uses a multi-stage computer vision pipeline to transform raw pixels into structured
-          camera data.
+          cIDaR experiments with a multi-stage computer vision pipeline to detect cameras and match
+          them against a dataset of known models. Results vary based on image quality and camera
+          visibility.
         </p>
       </div>
 
@@ -63,10 +64,10 @@ export default function PipelineDocsPage() {
       </div>
 
       <section className="mt-20 space-y-6">
-        <h2 className="text-2xl font-bold">Accuracy & Confidence</h2>
+        <h2 className="text-2xl font-bold">Confidence Scores</h2>
         <p className="text-muted-foreground leading-relaxed">
-          The pipeline returns a <strong>Confidence Score</strong> for the detection and a
-          <strong>Similarity Score</strong> for the match.
+          The pipeline returns two scores to help assess result quality. These are experimental
+          metrics: higher scores suggest better matches but are not guarantees.
         </p>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div className="bg-muted/50 rounded-xl border p-6">
@@ -79,7 +80,7 @@ export default function PipelineDocsPage() {
           <div className="bg-muted/50 rounded-xl border p-6">
             <h4 className="mb-2 font-bold">Match Similarity</h4>
             <p className="text-muted-foreground text-sm">
-              Calculated via cosine similarity between the image embedding and the catalog
+              Calculated via cosine similarity between the image embedding and the dataset
               embedding. 1.0 is an exact visual match.
             </p>
           </div>
