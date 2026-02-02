@@ -75,7 +75,7 @@ export default function Home() {
 
       {/* Stats Section */}
       <section className="container px-4">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Card className="bg-muted/30">
             <CardContent className="flex flex-col items-center justify-center p-6 text-center">
               <Database className="text-primary mb-2 h-8 w-8" />
@@ -119,7 +119,7 @@ export default function Home() {
               real-time streaming analysis.
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
+          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-12 md:grid-cols-3">
             <div className="flex flex-col items-center text-center">
               <div className="bg-primary text-primary-foreground mb-6 flex h-16 w-16 items-center justify-center rounded-2xl">
                 <Upload className="h-8 w-8" />
@@ -156,7 +156,7 @@ export default function Home() {
 
       {/* Features Overview */}
       <section className="container px-4">
-        <div className="flex flex-col gap-12 lg:flex-row lg:items-center">
+        <div className="mx-auto flex max-w-6xl flex-col gap-12 lg:flex-row lg:items-center">
           <div className="flex-1">
             <h2 className="mb-6 text-3xl font-bold sm:text-4xl">Built for Research</h2>
             <p className="text-muted-foreground mb-8 text-lg">
