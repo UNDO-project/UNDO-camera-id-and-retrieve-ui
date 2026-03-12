@@ -56,6 +56,10 @@ const nextConfig: NextConfig = {
         source: '/api/v1/images/:path*',
         destination: 'http://localhost:8000/api/v1/images/:path*',
       },
+      {
+        source: '/api/v1/video-download/:path*',
+        destination: 'http://localhost:8000/api/v1/video-download/:path*',
+      },
     ];
   },
 };
