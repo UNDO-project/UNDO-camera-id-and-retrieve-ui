@@ -25,12 +25,11 @@ export function ResultsDisplay({ result, imagePreview, imageMetadata }: ResultsD
   };
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-      {/* Left Column: Image with Overlay */}
-      <div className="space-y-4 lg:col-span-2">
+    <div className="space-y-8">
+      {/* Top Section: Image + Detections side by side */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_auto]">
         <Card className="bg-muted/30 overflow-hidden">
           <CardContent className="relative p-0">
-            {/* Image Container - maintaining aspect ratio logic could be improved with native aspect-ratio */}
             <div className="relative w-full">
               <NextImage
                 src={imagePreview}
@@ -52,10 +51,10 @@ export function ResultsDisplay({ result, imagePreview, imageMetadata }: ResultsD
           </CardContent>
         </Card>
 
-        {/* Detections List (Horizontal or Grid) */}
-        <div className="space-y-2">
+        {/* Detections List */}
+        <div className="space-y-2 lg:w-72">
           <h3 className="text-lg font-semibold">Detections ({result.detections.length})</h3>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1">
             {result.detections.map((detection) => {
               const bestMatch = result.matches.get(detection.id)?.[0];
               return (
@@ -72,23 +71,21 @@ export function ResultsDisplay({ result, imagePreview, imageMetadata }: ResultsD
         </div>
       </div>
 
-      {/* Right Column: Matches for selected detection */}
+      {/* Bottom Section: Full-width matches */}
       <div className="space-y-4">
-        <div className="sticky top-6">
-          <h3 className="mb-4 text-lg font-semibold">
-            {selectedDetection
-              ? `Matches for ${selectedDetection.label} (${Math.round(selectedDetection.confidence * 100)}%)`
-              : 'Select a detection'}
-          </h3>
+        <h3 className="text-lg font-semibold">
+          {selectedDetection
+            ? `Matches for ${selectedDetection.label} (${Math.round(selectedDetection.confidence * 100)}%)`
+            : 'Select a detection'}
+        </h3>
 
-          {selectedDetection ? (
-            <MatchList matches={selectedMatches} />
-          ) : (
-            <div className="text-muted-foreground rounded-lg border border-dashed p-8 text-center">
-              Select a detection box on the image or a card below to see matches.
-            </div>
-          )}
-        </div>
+        {selectedDetection ? (
+          <MatchList matches={selectedMatches} />
+        ) : (
+          <div className="text-muted-foreground rounded-lg border border-dashed p-8 text-center">
+            Select a detection box on the image or a card below to see matches.
+          </div>
+        )}
       </div>
     </div>
   );
