@@ -61,101 +61,86 @@ export function IdentificationFeature({ onComplete, className }: IdentificationF
   const isSystemReady = readiness?.ready ?? false;
 
   return (
-    <div className={`grid grid-cols-1 gap-8 lg:grid-cols-[300px_1fr_300px] ${className || ''}`}>
-      {/* Left Sidebar */}
-      <div className="order-last space-y-6 lg:order-first">
-        {readiness && (
-          <div className="sticky top-20">
-            <ReadinessIndicator status={readiness} isLoading={isReadinessLoading} />
+    <div className={`mx-auto w-full max-w-6xl space-y-6 ${className || ''}`}>
+      {/* System Status Bar */}
+      {readiness && <ReadinessIndicator status={readiness} isLoading={isReadinessLoading} />}
+
+      {/* Main Content */}
+      {!image ? (
+        <div className="flex min-h-[60vh] flex-1 flex-col justify-center py-12">
+          <div className="mx-auto w-full max-w-2xl space-y-4">
+            <ImageUploadZone onImageSelected={handleImageSelected} disabled={!isSystemReady} />
+            {uploadError && <ErrorState title="Upload Failed" error={uploadError} />}
           </div>
-        )}
-      </div>
-
-      {/* Main Column */}
-      <div className="flex flex-col">
-        {!image ? (
-          <div className="flex min-h-[60vh] flex-1 flex-col justify-center py-12">
-            <div className="mx-auto w-full max-w-2xl space-y-4">
-              <ImageUploadZone onImageSelected={handleImageSelected} disabled={!isSystemReady} />
-              {uploadError && <ErrorState title="Upload Failed" error={uploadError} />}
-            </div>
-          </div>
-        ) : (
-          <div className="mx-auto w-full max-w-4xl space-y-6 pt-4">
-            {/* Header / Controls */}
-            <div className="bg-muted/30 flex flex-col items-start justify-between gap-4 rounded-lg p-4 sm:flex-row sm:items-center">
-              <div className="flex items-center gap-4">
-                <div className="relative h-16 w-16 overflow-hidden rounded bg-black">
-                  <NextImage
-                    src={image.preview}
-                    alt="Upload"
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
-                </div>
-                <div>
-                  <p className="font-medium">{image.file.name}</p>
-                  <p className="text-muted-foreground text-sm">
-                    {image.metadata.width}x{image.metadata.height} •{' '}
-                    {(image.metadata.size / 1024).toFixed(0)}KB
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex w-full gap-2 sm:w-auto">
-                <Button variant="outline" onClick={handleReset} disabled={status === 'pending'}>
-                  <RefreshCw className="mr-2 h-4 w-4" />
-                  New Image
-                </Button>
-                {status !== 'success' && (
-                  <Button
-                    onClick={handleIdentify}
-                    disabled={status === 'pending' || !isSystemReady}
-                    className="flex-1 sm:flex-none"
-                  >
-                    {status === 'pending' && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Identify Cameras
-                  </Button>
-                )}
-              </div>
-            </div>
-
-            {/* Main Content Area */}
-            {status === 'pending' && <ResultsDisplaySkeleton />}
-
-            {status === 'error' && (
-              <ErrorState
-                title="Identification Failed"
-                error={apiError instanceof Error ? apiError.message : 'Unknown error'}
-                onRetry={handleIdentify}
-              />
-            )}
-
-            {status === 'success' && result && (
-              <ResultsDisplay
-                result={result}
-                imagePreview={image.preview}
-                imageMetadata={image.metadata}
-              />
-            )}
-
-            {/* Settings */}
-            {status !== 'success' && status !== 'error' && (
-              <div className="mx-auto w-full max-w-2xl">
-                <SettingsPanel
-                  params={params}
-                  onChange={setParams}
-                  disabled={status === 'pending'}
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {/* Header / Controls */}
+          <div className="bg-muted/30 flex flex-col items-start justify-between gap-4 rounded-lg p-4 sm:flex-row sm:items-center">
+            <div className="flex items-center gap-4">
+              <div className="relative h-16 w-16 overflow-hidden rounded bg-black">
+                <NextImage
+                  src={image.preview}
+                  alt="Upload"
+                  fill
+                  className="object-cover"
+                  unoptimized
                 />
               </div>
-            )}
-          </div>
-        )}
-      </div>
+              <div>
+                <p className="font-medium">{image.file.name}</p>
+                <p className="text-muted-foreground text-sm">
+                  {image.metadata.width}x{image.metadata.height} •{' '}
+                  {(image.metadata.size / 1024).toFixed(0)}KB
+                </p>
+              </div>
+            </div>
 
-      {/* Right Spacer (Hidden on mobile) */}
-      <div className="hidden lg:block" aria-hidden="true" />
+            <div className="flex w-full gap-2 sm:w-auto">
+              <Button variant="outline" onClick={handleReset} disabled={status === 'pending'}>
+                <RefreshCw className="mr-2 h-4 w-4" />
+                New Image
+              </Button>
+              {status !== 'success' && (
+                <Button
+                  onClick={handleIdentify}
+                  disabled={status === 'pending' || !isSystemReady}
+                  className="flex-1 sm:flex-none"
+                >
+                  {status === 'pending' && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Identify Cameras
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Main Content Area */}
+          {status === 'pending' && <ResultsDisplaySkeleton />}
+
+          {status === 'error' && (
+            <ErrorState
+              title="Identification Failed"
+              error={apiError instanceof Error ? apiError.message : 'Unknown error'}
+              onRetry={handleIdentify}
+            />
+          )}
+
+          {status === 'success' && result && (
+            <ResultsDisplay
+              result={result}
+              imagePreview={image.preview}
+              imageMetadata={image.metadata}
+            />
+          )}
+
+          {/* Settings */}
+          {status !== 'success' && status !== 'error' && (
+            <div className="mx-auto w-full max-w-2xl">
+              <SettingsPanel params={params} onChange={setParams} disabled={status === 'pending'} />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
