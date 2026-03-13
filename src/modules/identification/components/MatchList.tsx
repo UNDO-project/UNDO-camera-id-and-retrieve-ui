@@ -20,18 +20,18 @@ export function MatchList({ matches, onSelectMatch }: MatchListProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {matches.map((match) => (
         <Card key={match.cameraId} className="overflow-hidden">
           <div className="flex flex-col sm:flex-row">
-            <div className="bg-muted relative aspect-video w-full sm:aspect-square sm:w-48">
+            <div className="bg-muted relative aspect-video w-full sm:aspect-square sm:w-36 md:w-40">
               {match.catalogImageUrl ? (
                 <NextImage
                   src={match.catalogImageUrl}
                   alt={match.camera.modelName}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 640px) 100vw, 192px"
+                  sizes="(max-width: 640px) 100vw, 160px"
                 />
               ) : (
                 <div className="text-muted-foreground flex h-full w-full items-center justify-center text-xs">

@@ -2,12 +2,12 @@ import { Card, Skeleton } from '@/ui/components';
 
 export function MatchListSkeleton() {
   return (
-    <div className="space-y-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {Array.from({ length: 3 }).map((_, i) => (
         <Card key={i} className="overflow-hidden">
           <div className="flex flex-col sm:flex-row">
             {/* Image placeholder */}
-            <Skeleton className="aspect-video w-full rounded-none sm:aspect-square sm:w-48" />
+            <Skeleton className="aspect-video w-full rounded-none sm:aspect-square sm:w-36 md:w-40" />
 
             <div className="flex flex-1 flex-col justify-between p-4">
               <div>
