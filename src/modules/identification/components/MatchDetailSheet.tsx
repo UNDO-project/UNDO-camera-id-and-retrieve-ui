@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import NextImage from 'next/image';
-import Link from 'next/link';
 import {
   Sheet,
   SheetContent,
@@ -15,7 +14,7 @@ import {
   Separator,
 } from '@/ui/components';
 import { SimilarityBadge } from '@/modules/common';
-import { ExternalLink, ArrowRight } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import type { CameraMatch } from '@/primitives';
 
 interface MatchDetailSheetProps {
@@ -109,10 +108,10 @@ export function MatchDetailSheet({ match, open, onOpenChange }: MatchDetailSheet
         {/* Footer Actions */}
         <SheetFooter className="flex-row gap-2 border-t pt-4">
           <Button asChild className="flex-1 gap-2">
-            <Link href={`/catalog/${match.cameraId}`}>
+            <a href={`/catalog/${match.cameraId}`} target="_blank" rel="noopener noreferrer">
               View Full Details
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+              <ExternalLink className="h-4 w-4" />
+            </a>
           </Button>
           {camera.datasheetUrl && (
             <Button variant="outline" className="gap-2" asChild>
