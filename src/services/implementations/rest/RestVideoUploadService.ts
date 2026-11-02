@@ -20,6 +20,7 @@ export class RestVideoUploadService implements IVideoUploadService {
           target_fps: options.targetFps ?? 15,
           identification_mode: options.identificationMode ?? 'detect_only',
           output_format: options.outputFormat ?? 'mp4',
+          high_quality: options.highQuality ?? false,
         })
       );
     }
@@ -72,6 +73,7 @@ export class RestVideoUploadService implements IVideoUploadService {
             targetFps: data.options.target_fps,
             identificationMode: data.options.identification_mode,
             outputFormat: data.options.output_format,
+            highQuality: data.options.high_quality ?? false,
           }
         : null,
     };
