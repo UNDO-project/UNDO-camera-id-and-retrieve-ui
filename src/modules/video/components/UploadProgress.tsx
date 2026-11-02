@@ -31,7 +31,10 @@ export function UploadProgress({ progress, onDownload, onReset, className }: Upl
             {isFailed && 'Processing failed'}
           </p>
         </div>
-        <StatusBadge status={progress.status} />
+        <div className="flex items-center gap-2">
+          {progress.options?.highQuality && <Badge variant="outline">High quality</Badge>}
+          <StatusBadge status={progress.status} />
+        </div>
       </div>
 
       <div className="space-y-2">
