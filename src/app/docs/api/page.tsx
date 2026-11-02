@@ -34,7 +34,7 @@ export default function ApiDocsPage() {
       method: 'POST',
       path: '/api/v1/process-video',
       description: 'Upload a video file for frame-by-frame camera detection.',
-      params: 'file (video), options (JSON: target_fps, identification_mode)',
+      params: 'file (video), options (JSON: target_fps, identification_mode, high_quality)',
       category: 'Video',
     },
     {
