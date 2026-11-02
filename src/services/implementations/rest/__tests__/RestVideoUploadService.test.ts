@@ -58,10 +58,23 @@ describe('RestVideoUploadService', () => {
         target_fps: 10,
         identification_mode: 'full',
         output_format: 'mp4',
+        high_quality: false,
       });
 
       expect(result.taskId).toBe('task-123');
       expect(result.status).toBe('queued');
+    });
+
+    it('sends high_quality when requested', async () => {
+      vi.mocked(mockApiClient.post).mockResolvedValue({
+        data: { task_id: 'task-hq', status: 'queued', filename: 'video.mp4', file_size_mb: 1 },
+      } as any);
+
+      await service.upload(mockVideo, { highQuality: true });
+
+      const formData = vi.mocked(mockApiClient.post).mock.calls[0][1] as FormData;
+      const options = JSON.parse(formData.get('options') as string);
+      expect(options.high_quality).toBe(true);
     });
   });
 
@@ -83,6 +96,7 @@ describe('RestVideoUploadService', () => {
           target_fps: 15,
           identification_mode: 'detect_only',
           output_format: 'mp4',
+          high_quality: true,
         },
       };
 
@@ -95,6 +109,7 @@ describe('RestVideoUploadService', () => {
       expect(result.progressPercent).toBe(50);
       expect(result.framesProcessed).toBe(100);
       expect(result.options?.targetFps).toBe(15);
+      expect(result.options?.highQuality).toBe(true);
     });
   });
 
