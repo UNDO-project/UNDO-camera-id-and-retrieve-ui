@@ -27,6 +27,7 @@ export class MockVideoUploadService implements IVideoUploadService {
         targetFps: options?.targetFps ?? 15,
         identificationMode: options?.identificationMode ?? 'detect_only',
         outputFormat: options?.outputFormat ?? 'mp4',
+        highQuality: options?.highQuality ?? false,
       },
     };
 
