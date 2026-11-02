@@ -19,10 +19,10 @@ export function UploadOptions({
   return (
     <div className={cn('flex items-center justify-between', className)}>
       <div className="space-y-0.5">
-        <Label htmlFor="high-quality-toggle">High quality export (H.264)</Label>
+        <Label htmlFor="high-quality-toggle">H.264 export</Label>
         <p className="text-muted-foreground text-xs">
-          Larger file, better picture. Falls back to standard quality if the server cannot encode
-          H.264.
+          Plays in the browser and is smaller than the default MPEG-4 output. Falls back to MPEG-4
+          if the server cannot encode H.264.
         </p>
       </div>
       <input

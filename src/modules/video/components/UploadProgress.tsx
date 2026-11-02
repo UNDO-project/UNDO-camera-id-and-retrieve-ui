@@ -32,7 +32,7 @@ export function UploadProgress({ progress, onDownload, onReset, className }: Upl
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {progress.options?.highQuality && <Badge variant="outline">High quality</Badge>}
+          {progress.options?.highQuality && <Badge variant="outline">H.264</Badge>}
           <StatusBadge status={progress.status} />
         </div>
       </div>

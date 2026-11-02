@@ -7,7 +7,7 @@ describe('UploadOptions', () => {
     const onChange = vi.fn();
     render(<UploadOptions highQuality={false} onHighQualityChange={onChange} />);
 
-    const checkbox = screen.getByLabelText(/high quality export/i);
+    const checkbox = screen.getByLabelText(/h\.264 export/i);
     expect(checkbox).not.toBeChecked();
 
     fireEvent.click(checkbox);
@@ -17,7 +17,7 @@ describe('UploadOptions', () => {
   it('reflects a checked state and honours disabled', () => {
     render(<UploadOptions highQuality={true} onHighQualityChange={vi.fn()} disabled />);
 
-    const checkbox = screen.getByLabelText(/high quality export/i);
+    const checkbox = screen.getByLabelText(/h\.264 export/i);
     expect(checkbox).toBeChecked();
     expect(checkbox).toBeDisabled();
   });
