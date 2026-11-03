@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useVideoFile, useVideoUpload, useVideoProgress } from './hooks';
+import { useVideoFile, useVideoUpload, useVideoProgress, useDeleteVideoTask } from './hooks';
 import { VideoDropzone } from './components/VideoDropzone';
 import { UploadOptions } from './components/UploadOptions';
 import { UploadProgress } from './components/UploadProgress';
@@ -16,6 +16,7 @@ interface VideoUploadFeatureProps {
 export function VideoUploadFeature({ onComplete, className }: VideoUploadFeatureProps) {
   const { video, error: fileError, handleFileSelected, clearVideo } = useVideoFile();
   const uploadMutation = useVideoUpload();
+  const deleteTask = useDeleteVideoTask();
   const [highQuality, setHighQuality] = useState(false);
 
   const { data: progress } = useVideoProgress({
@@ -44,6 +45,12 @@ export function VideoUploadFeature({ onComplete, className }: VideoUploadFeature
   };
 
   const handleReset = () => {
+    // Release the server-side task right away instead of waiting for the
+    // retention sweeper. Fire-and-forget: the reset must never depend on it.
+    const taskId = uploadMutation.data?.taskId;
+    if (taskId) {
+      deleteTask.mutate(taskId, { onError: () => undefined });
+    }
     clearVideo();
     uploadMutation.reset();
   };
@@ -85,6 +92,7 @@ export function VideoUploadFeature({ onComplete, className }: VideoUploadFeature
       error: null,
       filename: video?.metadata.filename ?? 'Video',
       createdAt: new Date(),
+      expiresAt: null,
       options: null,
     };
 
