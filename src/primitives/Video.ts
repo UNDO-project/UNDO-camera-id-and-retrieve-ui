@@ -60,5 +60,6 @@ export interface VideoTaskProgress {
   error: string | null;
   filename: string;
   createdAt: Date | null;
+  expiresAt: Date | null; // server deletes the task and output after this; null while unfinished
   options: VideoProcessingOptions | null;
 }

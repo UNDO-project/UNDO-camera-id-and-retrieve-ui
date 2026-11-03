@@ -68,6 +68,7 @@ export class RestVideoUploadService implements IVideoUploadService {
       error: data.error,
       filename: data.filename ?? '',
       createdAt: data.created_at ? new Date(data.created_at) : null,
+      expiresAt: data.expires_at ? new Date(data.expires_at) : null,
       options: data.options
         ? {
             targetFps: data.options.target_fps,

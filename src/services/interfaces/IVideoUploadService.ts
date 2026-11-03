@@ -38,10 +38,14 @@ export interface IVideoUploadService {
   getDownloadUrl(taskId: string): string;
 
   /**
-   * Delete a video processing task and its files.
+   * Delete a video processing task and its files on the server.
+   *
+   * Removes the upload, the processed output and the task entry. The server
+   * also deletes finished tasks on its own after a short retention window
+   * (see VideoTaskProgress.expiresAt), so this only shortens that window.
    *
    * @param taskId - Unique task identifier
-   * @throws ServiceError if task not found
+   * @throws ServiceError if task not found (for example, already expired)
    */
   deleteTask(taskId: string): Promise<void>;
 }
