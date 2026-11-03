@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@/test/utils';
 import { VideoUploadFeature } from '@/modules/video';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { createServices } from '@/services/factory';
 
 describe('Video Upload Flow', () => {
@@ -37,7 +37,46 @@ describe('Video Upload Flow', () => {
 
     // 5. Verify Download Button
     expect(screen.getByText(/Download Result/i)).toBeInTheDocument();
+
+    // 6. The result is temporary and the card says so
+    expect(screen.getByText(/Available for download until/)).toBeInTheDocument();
   }, 20000); // Increase test timeout to 20s
+
+  it('releases the server-side task on Start Over', async () => {
+    const services = createServices({ apiBaseUrl: 'http://localhost', useMocks: true });
+    const deleteSpy = vi.spyOn(services.videoUpload, 'deleteTask');
+
+    render(<VideoUploadFeature />, { services });
+
+    const file = new File(['dummy content'], 'reset-video.mp4', { type: 'video/mp4' });
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    fireEvent.change(input, { target: { files: [file] } });
+
+    await waitFor(() => expect(screen.getByText('reset-video.mp4')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText(/Start Over/i)).toBeInTheDocument());
+
+    fireEvent.click(screen.getByText(/Start Over/i));
+
+    await waitFor(() => expect(deleteSpy).toHaveBeenCalledTimes(1));
+    expect(deleteSpy).toHaveBeenCalledWith(expect.any(String));
+    await waitFor(() => expect(screen.getByText(/drop video file here/i)).toBeInTheDocument());
+  });
+
+  it('still returns to the dropzone when the delete fails', async () => {
+    const services = createServices({ apiBaseUrl: 'http://localhost', useMocks: true });
+    vi.spyOn(services.videoUpload, 'deleteTask').mockRejectedValue(new Error('Task not found'));
+
+    render(<VideoUploadFeature />, { services });
+
+    const file = new File(['dummy content'], 'fail-video.mp4', { type: 'video/mp4' });
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    fireEvent.change(input, { target: { files: [file] } });
+
+    await waitFor(() => expect(screen.getByText(/Start Over/i)).toBeInTheDocument());
+    fireEvent.click(screen.getByText(/Start Over/i));
+
+    await waitFor(() => expect(screen.getByText(/drop video file here/i)).toBeInTheDocument());
+  });
 
   it('sends the high quality option when toggled before upload', async () => {
     const services = createServices({ apiBaseUrl: 'http://localhost', useMocks: true });

@@ -1,6 +1,8 @@
 import type { IVideoUploadService } from '@/services/interfaces';
 import type { VideoFile, VideoTask, VideoTaskProgress, VideoProcessingOptions } from '@/primitives';
 
+const MOCK_RETENTION_MS = 15 * 60 * 1000; // mirrors the backend's 15-minute window
+
 export class MockVideoUploadService implements IVideoUploadService {
   private tasks = new Map<string, VideoTaskProgress>();
 
@@ -23,6 +25,7 @@ export class MockVideoUploadService implements IVideoUploadService {
       elapsedSeconds: 0,
       outputUrl: null,
       error: null,
+      expiresAt: null,
       options: {
         targetFps: options?.targetFps ?? 15,
         identificationMode: options?.identificationMode ?? 'detect_only',
@@ -84,6 +87,7 @@ export class MockVideoUploadService implements IVideoUploadService {
           progressPercent: 100,
           framesProcessed: task.framesTotal,
           outputUrl: this.getDownloadUrl(taskId),
+          expiresAt: new Date(Date.now() + MOCK_RETENTION_MS),
         });
         clearInterval(interval);
       }

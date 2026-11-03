@@ -82,8 +82,10 @@ export default function PrivacyPage() {
               <div>
                 <h3 className="text-xl font-bold">Deletion</h3>
                 <p className="text-muted-foreground">
-                  Uploaded images and videos are automatically deleted after processing. We
-                  don&apos;t retain copies of your files or the detection results.
+                  Uploaded images and videos are deleted as soon as processing finishes. A processed
+                  video is kept for a short window (about 15 minutes) so you can download it, then
+                  deleted; pressing &quot;Start Over&quot; deletes it immediately. We don&apos;t
+                  retain copies of your files or the detection results.
                 </p>
               </div>
             </div>

@@ -16,6 +16,7 @@ export function UploadProgress({ progress, onDownload, onReset, className }: Upl
   const isProcessing = progress.status === 'processing' || progress.status === 'queued';
   const isCompleted = progress.status === 'completed';
   const isFailed = progress.status === 'failed';
+  const expiresAt = isCompleted ? progress.expiresAt : null;
 
   return (
     <Card className={cn('p-6', className)}>
@@ -30,6 +31,12 @@ export function UploadProgress({ progress, onDownload, onReset, className }: Upl
             {isCompleted && 'Processing complete'}
             {isFailed && 'Processing failed'}
           </p>
+          {expiresAt && (
+            <p className="text-muted-foreground mt-1 text-xs">
+              Available for download until {formatTime(expiresAt)}. The file is then deleted from
+              the server.
+            </p>
+          )}
         </div>
         <div className="flex items-center gap-2">
           {progress.options?.highQuality && <Badge variant="outline">H.264</Badge>}
@@ -68,6 +75,10 @@ export function UploadProgress({ progress, onDownload, onReset, className }: Upl
       </div>
     </Card>
   );
+}
+
+function formatTime(date: Date): string {
+  return date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
 }
 
 function StatusBadge({ status }: { status: string }) {
