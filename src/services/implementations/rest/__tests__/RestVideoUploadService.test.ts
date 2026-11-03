@@ -110,6 +110,32 @@ describe('RestVideoUploadService', () => {
       expect(result.framesProcessed).toBe(100);
       expect(result.options?.targetFps).toBe(15);
       expect(result.options?.highQuality).toBe(true);
+      expect(result.expiresAt).toBeNull();
+    });
+
+    it('maps expires_at to a Date once the task has finished', async () => {
+      vi.mocked(mockApiClient.get).mockResolvedValue({
+        data: {
+          task_id: 'task-123',
+          status: 'completed',
+          output_url: '/api/v1/video-download/task-123',
+          expires_at: '2026-11-03T12:15:00Z',
+        },
+      } as any);
+
+      const result = await service.getProgress('task-123');
+
+      expect(result.expiresAt).toEqual(new Date('2026-11-03T12:15:00Z'));
+    });
+  });
+
+  describe('deleteTask', () => {
+    it('calls the delete endpoint for the task', async () => {
+      vi.mocked(mockApiClient.delete).mockResolvedValue({ data: {} } as any);
+
+      await service.deleteTask('task-123');
+
+      expect(mockApiClient.delete).toHaveBeenCalledWith(ENDPOINTS.VIDEO_DELETE('task-123'));
     });
   });
 
