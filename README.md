@@ -17,7 +17,7 @@ This is a platform for transparency research, investigative journalism, and civi
 ## ✨ Features
 
 - **Image Upload**: Test single-frame camera detection and identification
-- **Video Processing**: Analyze recorded video frame-by-frame, with optional H.264 export
+- **Video Processing**: Analyze recorded video frame-by-frame, with optional H.264 export. Results are deleted from the server after a short window; "Start Over" deletes them immediately
 - **Live Streaming**: Real-time detection via WebSocket connections
 - **Camera Dataset**: Browse indexed camera models with specifications
 
