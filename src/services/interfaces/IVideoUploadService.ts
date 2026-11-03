@@ -14,7 +14,7 @@ export interface IVideoUploadService {
    * Upload a video file for processing.
    *
    * @param video - The video file to process
-   * @param options - Processing options
+   * @param options - Processing options (e.g. highQuality requests an H.264 export)
    * @returns Promise resolving to task information
    * @throws ServiceError if upload fails
    */

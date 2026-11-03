@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useVideoFile, useVideoUpload, useVideoProgress } from './hooks';
 import { VideoDropzone } from './components/VideoDropzone';
+import { UploadOptions } from './components/UploadOptions';
 import { UploadProgress } from './components/UploadProgress';
 import { AlertCircleIcon } from 'lucide-react';
 import { Card } from '@/ui/components';
@@ -15,6 +16,7 @@ interface VideoUploadFeatureProps {
 export function VideoUploadFeature({ onComplete, className }: VideoUploadFeatureProps) {
   const { video, error: fileError, handleFileSelected, clearVideo } = useVideoFile();
   const uploadMutation = useVideoUpload();
+  const [highQuality, setHighQuality] = useState(false);
 
   const { data: progress } = useVideoProgress({
     taskId: uploadMutation.data?.taskId ?? null,
@@ -24,9 +26,9 @@ export function VideoUploadFeature({ onComplete, className }: VideoUploadFeature
   // Handle auto-start upload when file is selected
   useEffect(() => {
     if (video && !uploadMutation.isPending && !uploadMutation.data) {
-      uploadMutation.mutate({ video });
+      uploadMutation.mutate({ video, options: { highQuality } });
     }
-  }, [video, uploadMutation]);
+  }, [video, uploadMutation, highQuality]);
 
   // Handle completion callback
   useEffect(() => {
@@ -96,6 +98,11 @@ export function VideoUploadFeature({ onComplete, className }: VideoUploadFeature
     );
   }
 
-  // 3. Idle state (Dropzone)
-  return <VideoDropzone onFileSelected={handleFileSelected} className={className} />;
+  // 3. Idle state (Options + Dropzone)
+  return (
+    <div className="space-y-4">
+      <UploadOptions highQuality={highQuality} onHighQualityChange={setHighQuality} />
+      <VideoDropzone onFileSelected={handleFileSelected} className={className} />
+    </div>
+  );
 }

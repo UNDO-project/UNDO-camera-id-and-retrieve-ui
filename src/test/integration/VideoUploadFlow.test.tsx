@@ -38,4 +38,36 @@ describe('Video Upload Flow', () => {
     // 5. Verify Download Button
     expect(screen.getByText(/Download Result/i)).toBeInTheDocument();
   }, 20000); // Increase test timeout to 20s
+
+  it('sends the high quality option when toggled before upload', async () => {
+    const services = createServices({ apiBaseUrl: 'http://localhost', useMocks: true });
+
+    render(<VideoUploadFeature />, { services });
+
+    const checkbox = screen.getByLabelText(/h\.264 export/i);
+    expect(checkbox).not.toBeChecked();
+    fireEvent.click(checkbox);
+    expect(checkbox).toBeChecked();
+
+    const file = new File(['dummy content'], 'hq-video.mp4', { type: 'video/mp4' });
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    fireEvent.change(input, { target: { files: [file] } });
+
+    await waitFor(() => expect(screen.getByText('hq-video.mp4')).toBeInTheDocument());
+    // The mock service echoes the requested option back in progress
+    await waitFor(() => expect(screen.getByText('H.264')).toBeInTheDocument());
+  });
+
+  it('does not send high quality by default', async () => {
+    const services = createServices({ apiBaseUrl: 'http://localhost', useMocks: true });
+
+    render(<VideoUploadFeature />, { services });
+
+    const file = new File(['dummy content'], 'default-video.mp4', { type: 'video/mp4' });
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    fireEvent.change(input, { target: { files: [file] } });
+
+    await waitFor(() => expect(screen.getByText('default-video.mp4')).toBeInTheDocument());
+    expect(screen.queryByText('H.264')).not.toBeInTheDocument();
+  });
 });

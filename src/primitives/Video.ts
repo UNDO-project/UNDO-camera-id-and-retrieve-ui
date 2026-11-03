@@ -22,6 +22,7 @@ export interface VideoProcessingOptions {
   targetFps: number; // 1-30
   identificationMode: 'detect_only' | 'full';
   outputFormat: 'mp4';
+  highQuality: boolean; // request H.264 export; backend default false
 }
 
 /**
