@@ -40,7 +40,8 @@ export default function ApiDocsPage() {
     {
       method: 'GET',
       path: '/api/v1/video-status/{task_id}',
-      description: 'Get progress of a video processing task.',
+      description:
+        'Get progress of a video processing task. Once finished, expires_at tells when the server deletes the result.',
       category: 'Video',
     },
     {
@@ -52,7 +53,8 @@ export default function ApiDocsPage() {
     {
       method: 'DELETE',
       path: '/api/v1/video-task/{task_id}',
-      description: 'Delete a video processing task and its files.',
+      description:
+        'Delete a video processing task and its files. The UI calls this on "Start Over"; otherwise the server deletes finished tasks after a short retention window.',
       category: 'Video',
     },
     // Catalog
